@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:latest
 
 RUN apt-get update && apt-get install -y libsaxonb-java yaz openjdk-11-jre
 

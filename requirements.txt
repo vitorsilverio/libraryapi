@@ -1,0 +1,4 @@
+zeep
+requests
+uvicorn
+fastapi

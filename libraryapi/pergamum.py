@@ -27,7 +27,7 @@ class PergamumDownloader:
     def download_iso(self, url: str, id: int):
         self._add_base(url)
         marc_xml = self.base[url].busca_marc(id)
-        process = subprocess.run(['saxonb-xslt', '-xsl:/pergamumSoap-MarcXML.xsl', '-s:/dev/stdin' ], input=bytes(marc_xml, encoding='utf-8'), capture_output=True)
+        process = subprocess.run(['saxonb-xslt', '-xsl:pergamumSoap-MarcXML.xsl', '-s:/dev/stdin' ], input=bytes(marc_xml, encoding='utf-8'), capture_output=True)
         process = subprocess.run(['yaz-marcdump', '-i', 'marcxml', '-o', 'marc', '-l', '5=110,9=97,18=97', '/dev/stdin'], input=process.stdout, capture_output = True)
            
 

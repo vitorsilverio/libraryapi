@@ -33,11 +33,11 @@
     </xsl:template>
 
     <!--
-    The template "buildMarcField" analizes the length of the "indicador".
-    If it is equal to three, it means the tag is not repeatable. 
-    If it is more than three, the tag is repeatable.
+    The template "buildMarcField" analizes the length of the "indicador" element.
+    If the length is equal to three, it means the tag is non repeatable (there are 
+    exceptions). If it is more than three, the tag is repeatable.
 
-    If the MARC tag ("paragrafo") is lower then 009 it is a control field,
+    If the MARC tag ("paragrafo" element) is lower then 009 it is a control field,
     if it is not, it is a datafield.
     -->
 
@@ -48,11 +48,10 @@
         <xsl:variable name="indicatorsLength" select="string-length(.)"/>
         <xsl:variable name="datafields"
             select="tokenize(normalize-space(./following-sibling::descricao[1]), ' &lt;br&gt;')"/>
-
         <!-- Main variables (end) -->
         <xsl:choose>
             <!-- 
-            When the length is 3 and the "descricao" has ' &lt;br&gt;', it means there are 
+            When the indicators length is 3 and the "descricao" has ' &lt;br&gt;', it means there are 
             repeatable controlfield MARC tags, so we have to tokenize the content of the 
             "descricao" element.
             -->
@@ -74,7 +73,7 @@
                                     </controlfield>
                                 </xsl:for-each>
                             </xsl:when>
-                            <!-- For not repeatable controlfields (001, 003, 005 and 008) -->
+                            <!-- For non repeatable controlfields (001, 003, 005 and 008) -->
                             <xsl:otherwise>
                                 <controlfield xmlns="http://www.loc.gov/MARC21/slim">
                                     <xsl:attribute name="tag">
@@ -85,34 +84,65 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
-                    <!-- For not repeatable datafields (fields greater than 009) -->
+                    <!-- For non repeatable datafields (fields greater than 009) -->
                     <xsl:otherwise>
-                        <datafield xmlns="http://www.loc.gov/MARC21/slim">
-                            <xsl:attribute name="tag">
-                                <xsl:value-of select="$tag"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="ind1">
-                                <xsl:value-of select="replace($indicators, '(.)\s.', '$1')"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="ind2">
-                                <xsl:value-of select="replace($indicators, '.\s(.)', '$1')"/>
-                            </xsl:attribute>
-                            <xsl:for-each select="tokenize(substring($datafields, 2), '\$')">                              
-                                <xsl:variable name="position" select="position()"/>
-                                
-                                <subfield>
-                                    <xsl:attribute name="code">
-                                        <xsl:value-of
-                                            select="normalize-space(substring(.[1], 1, 1))"
-                                        />
-                                        
+                        <xsl:choose>
+                            <xsl:when test="count($datafields) = 1">
+                                <datafield xmlns="http://www.loc.gov/MARC21/slim">
+                                    <xsl:attribute name="tag">
+                                        <xsl:value-of select="$tag"/>
                                     </xsl:attribute>
-                                    <xsl:value-of
-                                        select="normalize-space(substring(.[1], 3))"
-                                    />
-                                </subfield>
-                            </xsl:for-each>
-                        </datafield>
+                                    <xsl:attribute name="ind1">
+                                        <xsl:value-of select="replace($indicators, '(.)\s.', '$1')"
+                                        />
+                                    </xsl:attribute>
+                                    <xsl:attribute name="ind2">
+                                        <xsl:value-of select="replace($indicators, '.\s(.)', '$1')"
+                                        />
+                                    </xsl:attribute>
+                                    <xsl:for-each select="tokenize(substring($datafields, 2), '\$')">
+                                        <xsl:variable name="position" select="position()"/>
+                                        <subfield>
+                                            <xsl:attribute name="code">
+                                                <xsl:value-of
+                                                  select="normalize-space(substring(.[1], 1, 1))"/>
+                                            </xsl:attribute>
+                                            <xsl:value-of
+                                                select="normalize-space(substring(.[1], 3))"/>
+                                        </subfield>
+                                    </xsl:for-each>
+                                </datafield>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:for-each select="$datafields">
+                                    <xsl:variable name="position" select="position()"/>
+                                    <datafield xmlns="http://www.loc.gov/MARC21/slim">
+                                        <xsl:attribute name="tag">
+                                            <xsl:value-of select="$tag"/>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="ind1">
+                                            <xsl:value-of
+                                                select="replace($indicators, '(.)\s.', '$1')"/>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="ind2">
+                                            <xsl:value-of
+                                                select="replace($indicators, '.\s(.)', '$1')"/>
+                                        </xsl:attribute>
+                                        <xsl:for-each
+                                            select="tokenize(substring($datafields[$position], 2), '\$')">
+                                            <subfield>
+                                                <xsl:attribute name="code">
+                                                  <xsl:value-of
+                                                  select="normalize-space(substring(.[1], 1, 1))"/>
+                                                </xsl:attribute>
+                                                <xsl:value-of
+                                                  select="normalize-space(substring(.[1], 3))"/>
+                                            </subfield>
+                                        </xsl:for-each>
+                                    </datafield>
+                                </xsl:for-each>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>

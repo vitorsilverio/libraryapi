@@ -8,6 +8,7 @@ from typing import Optional
 from xmltodict import parse
 from pymarc import Record, Field
 from pymarc.marcxml import record_to_xml
+from itertools import chain
 
 
 class DadosMarc(BaseModel):
@@ -27,6 +28,66 @@ class Pergamum:
     def busca_marc(self, cod_acervo: int) -> str:
         return self.client.service.busca_marc(codigo_acervo_temp=cod_acervo)
 
+class Conversor:
+
+    @staticmethod
+    def build_field( paragrafo, indicador, descricao) -> Field:
+        # indicators conversion
+        """
+         Default indicators are "\\" (2 empry spaces)
+         Pergamum returns indicators as:
+         - ' X X '
+         - 'X X '
+         - 'X X'
+         and more:
+         Logic here consists remove trailing space and get last char as second indicator and last -2 as first indicator
+        """
+        indicators = [' ', ' ']
+        if indicador:
+            indicador = indicador.rstrip()
+            if len(indicador.rstrip()) <= 2:
+                indicators[0] = indicador.strip()
+            else:
+                indicators[0] = indicador[-3]
+                indicators[1] = indicador[-1]
+                
+
+        # Subfields conversion
+        """
+        Split subfields at $, but ignore fist one $ to avoid create a empty one.
+        Split again getting first position to code and third one at least for value
+        """
+        subfields = list(
+            chain.from_iterable(
+                [
+                    [ s[0], s[2:].strip() ] for s in descricao[1:].split('$')
+                ]
+            )
+        ) if descricao else None
+     
+        return Field(
+            tag=paragrafo.strip(),
+            indicators = indicators,
+            subfields = subfields,
+            data = descricao if int(paragrafo) < 10 else '' # Only control fields has data
+        )
+
+    @staticmethod
+    def convert_dados_marc_to_record(dados_marc: DadosMarc) -> Record:
+        record = Record(leader='     nam a22      a 4500')
+
+        for paragrafo, indicador, descricao in zip(dados_marc.paragrafo, dados_marc.indicador, dados_marc.descricao):
+            if indicador and '<br>' in indicador:
+                for indicador, descricao in zip(indicador.split('<br>'), descricao.split('<br>')):
+                    record.add_field(Conversor.build_field(paragrafo, indicador, descricao))
+            elif descricao and '<br>' in descricao:
+                for descricao in descricao.split('<br>'): 
+                    record.add_field(Conversor.build_field(paragrafo, indicador, descricao))
+            else:
+                record.add_field(Conversor.build_field(paragrafo, indicador, descricao))
+
+        return record
+
 
 class PergamumDownloader:
 
@@ -36,54 +97,13 @@ class PergamumDownloader:
     def _add_base(self, url: str) -> None:
         if url not in self.base:
             self.base[url] = Pergamum(url)
-
-    def _convert_to_marc(self, p, i, d):
-        # indicators conversion
-        # TODO needs improvements
-        indicators = [' ', ' ']
-        if i:
-            i = i.rstrip()
-            if len(i.rstrip()) <= 2:
-                indicators[0] = i.strip()
-            else:
-                indicators[1] = i[-1]
-                indicators[0] = i[-3]
-
-        # Subfields conversion
-        # TODO needs improvements
-        subfileds = [s for s in d[1:].split('$')] if d else None
-        x = []
-        for s in subfileds:
-            if s:
-                x.append(s[0])
-                x.append(s[2:].strip())        
-        return Field(
-            tag=p.strip(),
-            indicators = indicators,
-            subfields = x,
-            data = d if int(p) < 10 else ''
-        )
-
-    def _dados_marc_to_marc(self, dados_marc: DadosMarc) -> Record:
-        record = Record(leader='     nam a22      a 4500')
-
-        for paragrafo, indicador, descricao in zip(dados_marc.paragrafo, dados_marc.indicador, dados_marc.descricao):
-            if indicador and '<br>' in indicador:
-                for indicador, descricao in zip(indicador.split('<br>'), descricao.split('<br>')):
-                    record.add_field(self._convert_to_marc(paragrafo, indicador, descricao))
-            elif descricao and '<br>' in descricao:
-                for descricao in descricao.split('<br>'): 
-                    record.add_field(self._convert_to_marc(paragrafo, indicador, descricao))
-            else:
-                record.add_field(self._convert_to_marc(paragrafo, indicador, descricao))
-
-        return record
+       
 
     def download_record(self, url: str, id: int) -> Record:
         self._add_base(url)
         dadosmarc_xml = self.base[url].busca_marc(id)
         dados_marc = DadosMarc(**parse(dadosmarc_xml)['Dados_marc'])
-        return self._dados_marc_to_marc(dados_marc)
+        return Conversor.convert_dados_marc_to_record(dados_marc)
 
     def download_iso(self, url: str, id: int) -> BytesIO:
         return BytesIO(self.download_record(url, id).as_marc())

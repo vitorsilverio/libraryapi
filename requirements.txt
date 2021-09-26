@@ -2,3 +2,6 @@ zeep
 requests
 uvicorn
 fastapi
+xmltodict
+pydantic
+pymarc

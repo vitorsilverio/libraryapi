@@ -1,7 +1,5 @@
 FROM python:latest
 
-RUN apt-get update && apt-get install -y libsaxonb-java yaz openjdk-11-jre
-
 COPY . /
 
 RUN pip install -r /requirements.txt

@@ -1,7 +1,7 @@
-zeep
-requests
-uvicorn
 fastapi
-xmltodict
 pydantic
 pymarc
+requests
+uvicorn
+xmltodict
+zeep

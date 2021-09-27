@@ -126,4 +126,4 @@ class PergamumDownloader:
         return BytesIO(self.download_record(url, id).as_marc())
 
     def download_xml(self, url: str, id: int) -> str:
-        return record_to_xml(self.download_record(url, id))
+        return record_to_xml(self.download_record(url, id), namespace=True)

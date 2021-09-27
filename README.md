@@ -14,4 +14,4 @@ It's an API for get marc data in many formats (Marc xml, Marc binary) from ILS l
 - `uvicorn app.main:app --port 80`
 
 ## Endpoints and services
-Check the endpoints in documentation page at http://<deploy-ip>:<port>/docs
+Check the endpoints in documentation page at http://**deploy-ip**:**port**/docs

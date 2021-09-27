@@ -5,3 +5,4 @@ fastapi
 xmltodict
 pydantic
 pymarc
+pre-commit

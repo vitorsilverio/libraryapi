@@ -1,6 +1,8 @@
 from fastapi import FastAPI
+from fastapi.responses import Response
+from fastapi.responses import StreamingResponse
+
 from libraryapi.pergamum import PergamumDownloader
-from fastapi.responses import StreamingResponse, Response
 
 app = FastAPI()
 pergamumDownloader = PergamumDownloader()

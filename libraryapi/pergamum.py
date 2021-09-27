@@ -1,13 +1,15 @@
 from io import BytesIO
+from itertools import chain
+from typing import Optional
+
+from pydantic import BaseModel
+from pymarc import Field
+from pymarc import Record
+from pymarc.marcxml import record_to_xml
 from requests import Session
+from xmltodict import parse
 from zeep import Client
 from zeep.transports import Transport
-from pydantic import BaseModel
-from typing import Optional
-from xmltodict import parse
-from pymarc import Record, Field
-from pymarc.marcxml import record_to_xml
-from itertools import chain
 
 
 class DadosMarc(BaseModel):
@@ -99,7 +101,9 @@ class Conversor:
                         Conversor.build_field(paragrafo, indicador, descricao)
                     )
             else:
-                record.add_field(Conversor.build_field(paragrafo, indicador, descricao))
+                record.add_field(
+                    Conversor.build_field(paragrafo, indicador, descricao)
+                )
 
         return record
 

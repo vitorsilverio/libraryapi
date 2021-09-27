@@ -1,7 +1,8 @@
-fastapi
-pydantic
-pymarc
+zeep
 requests
 uvicorn
+fastapi
 xmltodict
-zeep
+pydantic
+pymarc
+pre-commit

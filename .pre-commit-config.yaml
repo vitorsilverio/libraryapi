@@ -1,0 +1,17 @@
+repos:
+- repo: https://github.com/asottile/reorder_python_imports
+  rev: v2.6.0
+  hooks:
+    - id: reorder-python-imports
+      args: [--application-directories=./]
+-   repo: https://github.com/ambv/black
+    rev: 21.9b0
+    hooks:
+    - id: black
+      language_version: python3
+      args: [./]
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+    - id: flake8
+      args: [--config=./.flake8]

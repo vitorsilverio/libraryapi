@@ -21,7 +21,7 @@ class DadosMarc(BaseModel):
 
 
 class PergamumWSrequest:
-    """Represents a connection and a resquest to the Pergamum Web Service"""
+    """Represents a connection and a request to the Pergamum Web Service"""
 
     def __init__(self, base_url: str) -> None:
         session = Session()

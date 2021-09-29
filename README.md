@@ -1,6 +1,6 @@
 # libraryapi
 
-An API to get MARC (Machine-Readable Cataloging) data in many formats (MARC ISO, MARCXML) from ILS like Pergamum.
+An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML) from ILS like Pergamum.
 
 ## Running
 ### Using docker

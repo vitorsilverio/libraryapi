@@ -20,8 +20,8 @@ class DadosMarc(BaseModel):
     descricao: list[Optional[str]]
 
 
-class PergamumWSrequest:
-    """Represents a connection and a request to the Pergamum Web Service"""
+class PergamumWebServiceRequest:
+    """Handle connections and requests to Pergamum Web Service"""
 
     def __init__(self, base_url: str) -> None:
         session = Session()
@@ -36,6 +36,9 @@ class PergamumWSrequest:
 
 
 class Conversor:
+    """Transform the data retrieved by the Pergamum Web Service "busca_marc"
+    request to Pymarc Fields and Records"""
+
     @staticmethod
     def build_field(paragrafo, indicador, descricao) -> Field:
         # Indicators handling:
@@ -78,7 +81,7 @@ class Conversor:
             subfields=subfields,
             data=descricao
             if int(paragrafo) < 10
-            else "",  # Only control fields has data
+            else "",  # Only control fields has "data" param
         )
 
     @staticmethod
@@ -109,23 +112,24 @@ class Conversor:
 
 
 class PergamumDownloader:
-    """Represents a serialized Record object ready to be used"""
+    """Handle the connection to the Pergamum Web Service and transform the
+    retrieved data to several representations"""
 
     def __init__(self) -> None:
         self.base = {}
 
     def _add_base(self, url: str) -> None:
         if url not in self.base:
-            self.base[url] = PergamumWSrequest(url)
+            self.base[url] = PergamumWebServiceRequest(url)
 
-    def download_record(self, url: str, id: int) -> Record:
+    def build_record(self, url: str, id: int) -> Record:
         self._add_base(url)
-        response_xml = self.base[url].busca_marc(id)
-        dados_marc = DadosMarc(**parse(response_xml)["Dados_marc"])
+        xml_response = self.base[url].busca_marc(id)
+        dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
         return Conversor.convert_dados_marc_to_record(dados_marc)
 
     def get_marc_iso(self, url: str, id: int) -> BytesIO:
-        return BytesIO(self.download_record(url, id).as_marc())
+        return BytesIO(self.build_record(url, id).as_marc())
 
     def get_marc_xml(self, url: str, id: int) -> str:
-        return record_to_xml(self.download_record(url, id), namespace=True)
+        return record_to_xml(self.build_record(url, id), namespace=True)

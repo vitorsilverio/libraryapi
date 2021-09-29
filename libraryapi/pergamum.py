@@ -79,7 +79,7 @@ class Conversor:
             tag=paragrafo.strip(),
             indicators=indicators,
             subfields=subfields,
-            data=descricao
+            data=descricao.replace("#", " ")
             if int(paragrafo) < 10
             else "",  # Only control fields has "data" param
         )

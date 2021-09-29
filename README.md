@@ -15,3 +15,12 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 
 ## Endpoints and services
 Check the endpoints in documentation page at http://**deploy-ip**:**port**/docs
+
+## Demo
+See a working demo instance at Heroku:
+ - https://libraryapi-demo.herokuapp.com/docs
+
+### Examples
+ - A MARC ISO 2709 record from Pergamum:  https://libraryapi-demo.herokuapp.com/pergamum/iso?url=https://pergamum.ufsc.br/pergamum&id=339742 
+ - A MARCXML record from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742
+ - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742

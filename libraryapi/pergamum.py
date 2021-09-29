@@ -13,14 +13,16 @@ from zeep.transports import Transport
 
 
 class DadosMarc(BaseModel):
-    """Represents a Dados_marc object received from Pergamum webservice"""
+    """Represents a Dados_marc object received from Pergamum Web Service"""
 
     paragrafo: list[str]
     indicador: list[Optional[str]]
     descricao: list[Optional[str]]
 
 
-class Pergamum:
+class PergamumWebServiceRequest:
+    """Handle connections and requests to Pergamum Web Service"""
+
     def __init__(self, base_url: str) -> None:
         session = Session()
         session.headers.update({"Accept-Encoding": "identity"})
@@ -34,19 +36,21 @@ class Pergamum:
 
 
 class Conversor:
+    """Transform the data retrieved by the Pergamum Web Service "busca_marc"
+    request to Pymarc Fields and Records"""
+
     @staticmethod
     def build_field(paragrafo, indicador, descricao) -> Field:
-        # indicators conversion
-        """
-        Default indicators are "\\" (2 empry spaces)
-        Pergamum returns indicators as:
-        - ' X X '
-        - 'X X '
-        - 'X X'
-        and more.
-        Logic here consists remove trailing space and get last char as second
-        indicator and last -2 as first indicator
-        """
+        # Indicators handling:
+        # Default indicators are "\\" (2 empty spaces).
+        # Pergamum WS returns indicators as:
+        # - ' X X '
+        # - 'X X '
+        # - 'X X'
+        # and more.
+        # Logic here consists removing trailing space and get the last char
+        # as the second indicator and the last -2 char as first indicator.
+
         indicators = [" ", " "]
         if indicador:
             indicador = indicador.rstrip()
@@ -56,12 +60,11 @@ class Conversor:
                 indicators[0] = indicador[-3]
                 indicators[1] = indicador[-1]
 
-        # Subfields conversion
-        """
-        Split subfields at $, but ignore fist one $ to avoid create
-        a empty one. Split again getting first position to code and
-        third one at least for value
-        """
+        # Subfields handling:
+        # Split the contents at "$", ignoring the first one to avoid the
+        # creation of an empty segment. Split them again getting the first
+        # position as the subfield code and the rest as the value.
+
         subfields = (
             list(
                 chain.from_iterable(
@@ -78,7 +81,7 @@ class Conversor:
             subfields=subfields,
             data=descricao
             if int(paragrafo) < 10
-            else "",  # Only control fields has data
+            else "",  # Only control fields has "data" param
         )
 
     @staticmethod
@@ -109,21 +112,24 @@ class Conversor:
 
 
 class PergamumDownloader:
+    """Handle the connection to the Pergamum Web Service and transform the
+    retrieved data to several representations"""
+
     def __init__(self) -> None:
         self.base = {}
 
     def _add_base(self, url: str) -> None:
         if url not in self.base:
-            self.base[url] = Pergamum(url)
+            self.base[url] = PergamumWebServiceRequest(url)
 
-    def download_record(self, url: str, id: int) -> Record:
+    def build_record(self, url: str, id: int) -> Record:
         self._add_base(url)
-        dadosmarc_xml = self.base[url].busca_marc(id)
-        dados_marc = DadosMarc(**parse(dadosmarc_xml)["Dados_marc"])
+        xml_response = self.base[url].busca_marc(id)
+        dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
         return Conversor.convert_dados_marc_to_record(dados_marc)
 
-    def download_iso(self, url: str, id: int) -> BytesIO:
-        return BytesIO(self.download_record(url, id).as_marc())
+    def get_marc_iso(self, url: str, id: int) -> BytesIO:
+        return BytesIO(self.build_record(url, id).as_marc())
 
-    def download_xml(self, url: str, id: int) -> str:
-        return record_to_xml(self.download_record(url, id), namespace=True)
+    def get_marc_xml(self, url: str, id: int) -> str:
+        return record_to_xml(self.build_record(url, id), namespace=True)

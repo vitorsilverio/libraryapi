@@ -2,12 +2,14 @@ from fastapi import FastAPI
 from fastapi.responses import Response
 from fastapi.responses import StreamingResponse
 
+from app.error import configure
 from app.util import attach_file
 from libraryapi.pergamum import PergamumDownloader
 
 
 app = FastAPI()
 pergamumDownloader = PergamumDownloader()
+configure(app)
 
 
 @app.get("/pergamum/mrc")
@@ -25,6 +27,7 @@ async def get_marc_xml(url: str, id: int) -> Response:
         pergamumDownloader.get_marc_xml(url, id), media_type="application/xml"
     )
     return response
+
 
 @app.get("/pergamum/mrk")
 async def get_marc_mrk(url: str, id: int) -> Response:

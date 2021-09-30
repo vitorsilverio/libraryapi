@@ -3,13 +3,18 @@ from itertools import chain
 from typing import Optional
 
 from pydantic import BaseModel
+from pydantic.error_wrappers import ValidationError
 from pymarc import Field
 from pymarc import Record
 from pymarc.marcxml import record_to_xml
 from requests import Session
+from requests.exceptions import HTTPError
 from xmltodict import parse
 from zeep import Client
+from zeep.exceptions import XMLSyntaxError
 from zeep.transports import Transport
+
+from app.error import PergamumWebServiceException
 
 
 class DadosMarc(BaseModel):
@@ -21,15 +26,20 @@ class DadosMarc(BaseModel):
 
 
 class PergamumWebServiceRequest:
-    """Handle connections and requests to Pergamum Web Service"""
+    """Represents a connection that make requests to Pergamum Web Service"""
 
     def __init__(self, base_url: str) -> None:
         session = Session()
         session.headers.update({"Accept-Encoding": "identity"})
-        self.client = Client(
-            f"{base_url}/web_service/servidor_ws.php?wsdl",
-            transport=Transport(session=session),
-        )
+        try:
+            self.client = Client(
+                f"{base_url}/web_service/servidor_ws.php?wsdl",
+                transport=Transport(session=session),
+            )
+        except HTTPError as e:
+            raise PergamumWebServiceException(
+                message=f"{base_url}/web_service/servidor_ws.php?wsdl returned {e.response.status_code}"
+            )
 
     def busca_marc(self, cod_acervo: int) -> str:
         return self.client.service.busca_marc(codigo_acervo_temp=cod_acervo)
@@ -124,8 +134,18 @@ class PergamumDownloader:
 
     def build_record(self, url: str, id: int) -> Record:
         self._add_base(url)
-        xml_response = self.base[url].busca_marc(id)
-        dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
+        try:
+            xml_response = self.base[url].busca_marc(id)
+        except XMLSyntaxError:
+            raise PergamumWebServiceException(
+                "Invalid response from Pergamum WebService"
+            )
+        try:
+            dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
+        except ValidationError:
+            raise PergamumWebServiceException(
+                "Did not recieved a valid registry. Make sure the id is valid"
+            )
         return Conversor.convert_dados_marc_to_record(dados_marc)
 
     def get_marc_iso(self, url: str, id: int) -> BytesIO:

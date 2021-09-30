@@ -8,10 +8,10 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 - `docker run -d --name libraryapi -p 80:80 vitorsilverio/libraryapi:main`
 
 ### Locally
-- Make sure you have python 3.9+ installed
+- Make sure you have python 3.9+ installed. You may have to prefix `pip` and `uvicorn` commands with `python3.9 -m` if you has more than one python interpreter.
 - You can create a virtualenv before
 - `pip install -r requirements.txt`
-- `python3.9 -m uvicorn app.main:app --port 80`
+- `uvicorn app.main:app --port 80`
 
 ## Endpoints and services
 Check the endpoints in documentation page at http://**deploy-ip**:**port**/docs

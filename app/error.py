@@ -2,10 +2,9 @@ from fastapi import FastAPI
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
+from libraryapi.pergamum import PergamumWebServiceException
 
-class PergamumWebServiceException(Exception):
-    def __init__(self, message: str) -> None:
-        self.message = message
+
 
 
 def configure(app: FastAPI) -> None:

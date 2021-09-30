@@ -14,8 +14,10 @@ from zeep import Client
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import Transport
 
-from app.error import PergamumWebServiceException
 
+class PergamumWebServiceException(Exception):
+    def __init__(self, message: str) -> None:
+        self.message = message
 
 class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
@@ -39,6 +41,10 @@ class PergamumWebServiceRequest:
         except HTTPError as e:
             raise PergamumWebServiceException(
                 message=f"{base_url}/web_service/servidor_ws.php?wsdl returned {e.response.status_code}"
+            )
+        except XMLSyntaxError:
+            raise PergamumWebServiceException(
+                "Invalid response from Pergamum WebService."
             )
 
     def busca_marc(self, cod_acervo: int) -> str:
@@ -134,12 +140,7 @@ class PergamumDownloader:
 
     def build_record(self, url: str, id: int) -> Record:
         self._add_base(url)
-        try:
-            xml_response = self.base[url].busca_marc(id)
-        except XMLSyntaxError:
-            raise PergamumWebServiceException(
-                "Invalid response from Pergamum WebService"
-            )
+        xml_response = self.base[url].busca_marc(id)
         try:
             dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
         except ValidationError:

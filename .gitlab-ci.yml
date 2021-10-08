@@ -8,8 +8,7 @@ stages:
 build:
   stage: build
   only:
-    - master
-    - homologacao
+    - main
   script:
     - docker build . -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" --no-cache 
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER  -p $CI_REGISTRY_PASSWORD
@@ -37,7 +36,7 @@ deploy_outros:
 deploy_prod:
   <<: *deploy
   only:
-    - master
+    - main
   variables:
     IMAGE_TAG: "latest"
 
@@ -69,6 +68,6 @@ portainer_outros:
 portainer_prod:
   <<: *portainer
   only:
-    - master
+    - main
   variables:
     WEBHOOK_PORTAINER: ${WEBHOOK_PORTAINER_PRODUCAO}

@@ -5,8 +5,6 @@ from fastapi.responses import JSONResponse
 from libraryapi.pergamum import PergamumWebServiceException
 
 
-
-
 def configure(app: FastAPI) -> None:
     @app.exception_handler(PergamumWebServiceException)
     async def pergamum_handle(

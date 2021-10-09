@@ -19,6 +19,7 @@ class PergamumWebServiceException(Exception):
     def __init__(self, message: str) -> None:
         self.message = message
 
+
 class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
 

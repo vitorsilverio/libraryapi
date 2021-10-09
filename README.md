@@ -1,4 +1,7 @@
 # libraryapi
+![deploy](https://github.com/vitorsilverio/libraryapi/actions/workflows/deploy.yml/badge.svg)
+![lint](https://github.com/vitorsilverio/libraryapi/actions/workflows/lint.yml/badge.svg)
+[![Known Vulnerabilities](https://snyk.io/test/github/vitorsilverio/libraryapi/badge.svg)](https://snyk.io/test/github/vitorsilverio/libraryapi)
 
 An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML) from ILS like Pergamum.
 

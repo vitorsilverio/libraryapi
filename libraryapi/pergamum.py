@@ -13,6 +13,7 @@ from xmltodict import parse
 from zeep import Client
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import Transport
+import re
 
 
 class PergamumWebServiceException(Exception):
@@ -142,11 +143,12 @@ class PergamumDownloader:
     def build_record(self, url: str, id: int) -> Record:
         self._add_base(url)
         xml_response = self.base[url].busca_marc(id)
+        xml_response = re.sub(r"<br\s?/?>", "", xml_response)
         try:
             dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
         except ValidationError:
             raise PergamumWebServiceException(
-                "Did not recieved a valid registry. Make sure the id is valid"
+                "Did not received a valid registry. Make sure the id is valid"
             )
         return Conversor.convert_dados_marc_to_record(dados_marc)
 

@@ -3,7 +3,7 @@
 ![lint](https://github.com/vitorsilverio/libraryapi/actions/workflows/lint.yml/badge.svg)
 ![Snyk](https://github.com/vitorsilverio/libraryapi/actions/workflows/snyk.yml/badge.svg)
 ![CodeQL Analysis](https://github.com/vitorsilverio/libraryapi/actions/workflows/codeql-analysis.yml/badge.svg)
-![Tests](https://github.com/vitorsilverio/libraryapi/actions/workflows/snyk.yml/tests.svg)
+![Tests](https://github.com/vitorsilverio/libraryapi/actions/workflows/tests.yml/badge.svg)
 [![Dockerhub](https://img.shields.io/docker/pulls/vitorsilverio/libraryapi.svg)](https://hub.docker.com/r/vitorsilverio/libraryapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/vitorsilverio/libraryapi/badge.svg)](https://snyk.io/test/github/vitorsilverio/libraryapi)
 

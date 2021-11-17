@@ -2,6 +2,7 @@ import re
 from io import BytesIO
 from itertools import chain
 from typing import Dict
+from typing import Optional
 
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
@@ -25,8 +26,8 @@ class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
 
     paragrafo: list[str]
-    indicador: list[str] = ""
-    descricao: list[str] = ""
+    indicador: list[Optional[str]]
+    descricao: list[Optional[str]]
 
 
 class PergamumWebServiceRequest:

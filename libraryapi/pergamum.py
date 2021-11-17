@@ -1,6 +1,7 @@
+import re
 from io import BytesIO
 from itertools import chain
-from typing import Optional
+from typing import Dict
 
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
@@ -13,7 +14,6 @@ from xmltodict import parse
 from zeep import Client
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import Transport
-import re
 
 
 class PergamumWebServiceException(Exception):
@@ -25,8 +25,8 @@ class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
 
     paragrafo: list[str]
-    indicador: list[Optional[str]]
-    descricao: list[Optional[str]]
+    indicador: list[str] = ""
+    descricao: list[str] = ""
 
 
 class PergamumWebServiceRequest:
@@ -134,7 +134,7 @@ class PergamumDownloader:
     retrieved data to several representations"""
 
     def __init__(self) -> None:
-        self.base = {}
+        self.base: Dict[str, PergamumWebServiceRequest] = {}
 
     def _add_base(self, url: str) -> None:
         if url not in self.base:

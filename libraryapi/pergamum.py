@@ -1,19 +1,20 @@
+import re
 from io import BytesIO
 from itertools import chain
+from typing import Dict
 from typing import Optional
 
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
-from pymarc import Field
-from pymarc import Record
-from pymarc.marcxml import record_to_xml
-from requests import Session
-from requests.exceptions import HTTPError
-from xmltodict import parse
+from pymarc import Field  # type: ignore
+from pymarc import Record  # type: ignore
+from pymarc.marcxml import record_to_xml  # type: ignore
+from requests import Session  # type: ignore
+from requests.exceptions import HTTPError  # type: ignore
+from xmltodict import parse  # type: ignore
 from zeep import Client
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import Transport
-import re
 
 
 class PergamumWebServiceException(Exception):
@@ -109,6 +110,8 @@ class Conversor:
         for paragrafo, indicador, descricao in zip(
             dados_marc.paragrafo, dados_marc.indicador, dados_marc.descricao
         ):
+            if not descricao:
+                descricao = ""
             if indicador and "<br>" in indicador:
                 for indicador, descricao in zip(
                     indicador.split("<br>"), descricao.split("<br>")
@@ -134,7 +137,7 @@ class PergamumDownloader:
     retrieved data to several representations"""
 
     def __init__(self) -> None:
-        self.base = {}
+        self.base: Dict[str, PergamumWebServiceRequest] = {}
 
     def _add_base(self, url: str) -> None:
         if url not in self.base:

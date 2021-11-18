@@ -2,3 +2,6 @@
 __pycache__
 *.xml
 .venv
+.cache
+.mypy_cache
+.pytest_cache

@@ -20,8 +20,7 @@ COPY --from=builder /app/wheels /wheels
 COPY --from=builder /app/requirements.txt .
 
 RUN python -m pip install --upgrade pip && \
-    pip install --no-cache /wheels/* && \
-    pip install uvicorn[standard]
+    pip install --no-cache /wheels/*
 
 RUN addgroup --gid 1001 --system app && \
     adduser --no-create-home --shell /bin/false --disabled-password --uid 1001 --system --group app

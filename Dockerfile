@@ -20,7 +20,7 @@ COPY --from=builder /app/wheels /wheels
 COPY --from=builder /app/requirements.txt .
 
 RUN python -m pip install --upgrade pip && \
-    pip install --no-cache /wheels/* \
+    pip install --no-cache /wheels/* && \
     pip install uvicorn[standard]
 
 RUN addgroup --gid 1001 --system app && \

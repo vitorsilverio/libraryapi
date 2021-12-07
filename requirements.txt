@@ -3,7 +3,7 @@ asgiref==3.4.1
 attrs==21.2.0
 cached-property==1.5.2
 certifi==2021.10.8
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
 click==8.0.3
 colorama==0.4.4
 fastapi==0.70.0
@@ -21,7 +21,7 @@ requests-file==1.5.1
 requests-toolbelt==0.9.1
 six==1.16.0
 sniffio==1.2.0
-typing-extensions==4.0.0
+typing-extensions==4.0.1
 urllib3==1.26.7
 uvicorn[standard]==0.15.0
 xmltodict==0.12.0

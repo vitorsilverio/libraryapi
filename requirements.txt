@@ -11,7 +11,7 @@ h11==0.12.0
 httptools==0.3.0
 idna==3.3
 isodate==0.6.0
-lxml==4.6.4
+lxml==4.6.5
 platformdirs==2.4.0
 pydantic==1.8.2
 pymarc==4.1.1

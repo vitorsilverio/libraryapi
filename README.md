@@ -31,3 +31,6 @@ See a working demo instance at Heroku:
  - A MARC ISO 2709 record from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrc?url=https://pergamum.ufsc.br/pergamum&id=339742
  - A MARCXML record from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742
  - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742
+
+## Contributing
+Please read Contibution.md to know how contributing in code or you can [buy me a ☕](https://www.buymeacoffee.com/vitorsilverio) 

@@ -104,7 +104,7 @@ class Conversor:
         )
 
     @staticmethod
-    def convert_dados_marc_to_record(dados_marc: DadosMarc) -> Record:
+    def convert_dados_marc_to_record(dados_marc: DadosMarc, id: int) -> Record:
         record = Record(leader="     nam a22      a 4500")
 
         for paragrafo, indicador, descricao in zip(
@@ -129,6 +129,14 @@ class Conversor:
                     Conversor.build_field(paragrafo, indicador, descricao)
                 )
 
+        # Ensure 001 control field has the correct control number
+
+        for field_001 in record.get_fields('001'):
+            record.remove_field(field_001)
+
+        new_001_field = Field(tag='001', data=str(id))
+        record.add_ordered_field(new_001_field)
+
         return record
 
 
@@ -151,9 +159,9 @@ class PergamumDownloader:
             dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
         except ValidationError:
             raise PergamumWebServiceException(
-                "Did not received a valid registry. Make sure the id is valid"
+                "Did not received a valid record. Make sure the id is valid"
             )
-        return Conversor.convert_dados_marc_to_record(dados_marc)
+        return Conversor.convert_dados_marc_to_record(dados_marc, id)
 
     def get_marc_iso(self, url: str, id: int) -> BytesIO:
         return BytesIO(self.build_record(url, id).as_marc())

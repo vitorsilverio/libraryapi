@@ -16,7 +16,7 @@ platformdirs==2.4.1
 pydantic==1.9.0
 pymarc==4.1.2
 pytz==2021.3
-requests==2.27.0
+requests==2.27.1
 requests-file==1.5.1
 requests-toolbelt==0.9.1
 six==1.16.0

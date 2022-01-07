@@ -131,10 +131,10 @@ class Conversor:
 
         # Ensure 001 control field has the correct control number
 
-        for field_001 in record.get_fields('001'):
+        for field_001 in record.get_fields("001"):
             record.remove_field(field_001)
 
-        new_001_field = Field(tag='001', data=str(id))
+        new_001_field = Field(tag="001", data=str(id))
         record.add_ordered_field(new_001_field)
 
         return record

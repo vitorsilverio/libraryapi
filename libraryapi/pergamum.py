@@ -155,6 +155,8 @@ class PergamumDownloader:
         self._add_base(url)
         xml_response = self.base[url].busca_marc(id)
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
+        xml_response = re.sub(r"&", "&amp;", xml_response)
+        xml_response = re.sub(r"&amp;lt;br&amp;gt;", "&lt;br&gt;", xml_response)
         try:
             dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
         except ValidationError:

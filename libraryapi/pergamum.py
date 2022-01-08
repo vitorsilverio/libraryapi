@@ -63,21 +63,21 @@ class Conversor:
         # Indicators handling:
         # Default indicators are "\\" (2 empty spaces).
         # Pergamum WS returns indicators as:
-        # - ' X X '
-        # - 'X X '
         # - 'X X'
-        # and more.
-        # Logic here consists removing trailing space and get the last char
-        # as the second indicator and the last -2 char as first indicator.
+        # - '  X'
+        # - 'X  '
+        # - 'X X '
+        # Logic here consists checking the length of the "indicador" string
+        # and then adjusting the values according to their positions.
 
         indicators = [" ", " "]
         if indicador:
-            indicador = indicador.rstrip()
-            if len(indicador.rstrip()) <= 2:
-                indicators[0] = indicador.strip()
-            else:
+            if len(indicador) == 3:
                 indicators[0] = indicador[-3]
                 indicators[1] = indicador[-1]
+            else:
+                indicators[0] = indicador[-4]
+                indicators[1] = indicador[-2]
 
         # Subfields handling:
         # Split the contents at "$", ignoring the first one to avoid the
@@ -114,7 +114,7 @@ class Conversor:
                 descricao = ""
             if indicador and "<br>" in indicador:
                 for indicador, descricao in zip(
-                    indicador.split("<br>"), descricao.split("<br>")
+                    indicador.split("<br> "), descricao.split(" <br>")
                 ):
                     record.add_field(
                         Conversor.build_field(paragrafo, indicador, descricao)
@@ -131,10 +131,10 @@ class Conversor:
 
         # Ensure 001 control field has the correct control number
 
-        for field_001 in record.get_fields('001'):
+        for field_001 in record.get_fields("001"):
             record.remove_field(field_001)
 
-        new_001_field = Field(tag='001', data=str(id))
+        new_001_field = Field(tag="001", data=str(id))
         record.add_ordered_field(new_001_field)
 
         return record
@@ -155,8 +155,10 @@ class PergamumDownloader:
         self._add_base(url)
         xml_response = self.base[url].busca_marc(id)
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
+        xml_response = re.sub(r"&", "&amp;", xml_response)
+        xml_response = re.sub(r"&amp;lt;br&amp;gt;", "&lt;br&gt;", xml_response)
         try:
-            dados_marc = DadosMarc(**parse(xml_response)["Dados_marc"])
+            dados_marc = DadosMarc(**parse(xml_response, strip_whitespace=False)["Dados_marc"])
         except ValidationError:
             raise PergamumWebServiceException(
                 "Did not received a valid record. Make sure the id is valid"

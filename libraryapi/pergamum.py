@@ -105,7 +105,7 @@ class Conversor:
 
     @staticmethod
     def convert_dados_marc_to_record(dados_marc: DadosMarc, id: int) -> Record:
-        record = Record(leader="     nam a22      a 4500")
+        record = Record(leader="     nam a22      a 4500", force_utf8=True)
 
         for paragrafo, indicador, descricao in zip(
             dados_marc.paragrafo, dados_marc.indicador, dados_marc.descricao

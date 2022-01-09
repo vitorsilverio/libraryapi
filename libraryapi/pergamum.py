@@ -1,14 +1,15 @@
 import re
+import xml.etree.ElementTree as ET
 from io import BytesIO
 from itertools import chain
 from typing import Dict
 from typing import Optional
 
+import pymarc  # type: ignore
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
 from pymarc import Field  # type: ignore
-from pymarc import Record  # type: ignore
-from pymarc.marcxml import record_to_xml  # type: ignore
+from pymarc import Record
 from requests import Session  # type: ignore
 from requests.exceptions import HTTPError  # type: ignore
 from xmltodict import parse  # type: ignore
@@ -156,9 +157,13 @@ class PergamumDownloader:
         xml_response = self.base[url].busca_marc(id)
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
         xml_response = re.sub(r"&", "&amp;", xml_response)
-        xml_response = re.sub(r"&amp;lt;br&amp;gt;", "&lt;br&gt;", xml_response)
+        xml_response = re.sub(
+            r"&amp;lt;br&amp;gt;", "&lt;br&gt;", xml_response
+        )
         try:
-            dados_marc = DadosMarc(**parse(xml_response, strip_whitespace=False)["Dados_marc"])
+            dados_marc = DadosMarc(
+                **parse(xml_response, strip_whitespace=False)["Dados_marc"]
+            )
         except ValidationError:
             raise PergamumWebServiceException(
                 "Did not received a valid record. Make sure the id is valid"
@@ -169,4 +174,7 @@ class PergamumDownloader:
         return BytesIO(self.build_record(url, id).as_marc())
 
     def get_marc_xml(self, url: str, id: int) -> str:
-        return record_to_xml(self.build_record(url, id), namespace=True)
+        node = pymarc.marcxml.record_to_xml_node(
+            self.build_record(url, id), namespace=True
+        )
+        return ET.tostring(node, encoding="utf-8", xml_declaration=True)

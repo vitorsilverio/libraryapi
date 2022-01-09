@@ -35,6 +35,9 @@ websockets = "==10.1"
 zeep = "==4.1.0"
 
 [dev-packages]
+pre-commit = "==2.16.0"
+pytest = "==6.2.5"
+pipenv = "==2022.1.8"
 
 [requires]
 python_version = "3.9"

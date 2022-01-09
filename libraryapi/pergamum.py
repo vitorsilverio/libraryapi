@@ -6,13 +6,13 @@ from typing import Dict
 from typing import Optional
 
 import pymarc  # type: ignore
+import xmltodict
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
 from pymarc import Field  # type: ignore
 from pymarc import Record
 from requests import Session  # type: ignore
 from requests.exceptions import HTTPError  # type: ignore
-from xmltodict import parse  # type: ignore
 from zeep import Client
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import Transport
@@ -162,7 +162,9 @@ class PergamumDownloader:
         )
         try:
             dados_marc = DadosMarc(
-                **parse(xml_response, strip_whitespace=False)["Dados_marc"]
+                **xmltodict.parse(xml_response, strip_whitespace=False)[
+                    "Dados_marc"
+                ]
             )
         except ValidationError:
             raise PergamumWebServiceException(

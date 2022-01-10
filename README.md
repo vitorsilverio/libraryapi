@@ -11,7 +11,7 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 
 ## Running
 ### Using docker
-- `docker pull vitorsilverio/libraryapi:main` 
+- `docker pull vitorsilverio/libraryapi:main`
 - `docker run -d --name libraryapi -p 80:80 vitorsilverio/libraryapi:main`
 
 ### Locally
@@ -33,4 +33,4 @@ See a working demo instance at Heroku:
  - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742
 
 ## Contributing
-Please read Contibution.md to know how contributing in code or you can [buy me a ☕](https://www.buymeacoffee.com/vitorsilverio) 
+Please read Contibution.md to know how contributing in code or you can [buy me a ☕](https://www.buymeacoffee.com/vitorsilverio)

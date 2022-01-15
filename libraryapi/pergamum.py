@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from io import BytesIO
 from itertools import chain
 from typing import Dict
-from typing import Optional
+from typing import List
 
 import pymarc  # type: ignore
 import xmltodict
@@ -19,6 +19,7 @@ from zeep.transports import Transport
 
 
 class PergamumWebServiceException(Exception):
+    """Represents an exception object in the Pergamum Web Service"""
     def __init__(self, message: str) -> None:
         self.message = message
 
@@ -26,9 +27,9 @@ class PergamumWebServiceException(Exception):
 class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
 
-    paragrafo: list[str]
-    indicador: list[Optional[str]]
-    descricao: list[Optional[str]]
+    paragrafo: List[str]
+    indicador: List[str]
+    descricao: List[str]
 
 
 class PergamumWebServiceRequest:
@@ -42,16 +43,17 @@ class PergamumWebServiceRequest:
                 f"{base_url}/web_service/servidor_ws.php?wsdl",
                 transport=Transport(session=session),
             )
-        except HTTPError as e:
+        except HTTPError as error:
             raise PergamumWebServiceException(
-                message=f"{base_url}/web_service/servidor_ws.php?wsdl returned {e.response.status_code}"
-            )
+                message=f"{base_url}/web_service/servidor_ws.php?wsdl returned {error.response.status_code}"
+            ) from error
         except XMLSyntaxError:
             raise PergamumWebServiceException(
                 "Invalid response from Pergamum WebService."
             )
 
     def busca_marc(self, cod_acervo: int) -> str:
+        """Returns the xml response from the "busca_marc" operation"""
         return self.client.service.busca_marc(codigo_acervo_temp=cod_acervo)
 
 
@@ -61,6 +63,7 @@ class Conversor:
 
     @staticmethod
     def build_field(paragrafo, indicador, descricao) -> Field:
+        """Return Pymarc Field objects in order to build a Pymarc Record"""
         # Indicators handling:
         # Default indicators are "\\" (2 empty spaces).
         # Pergamum WS returns indicators as:
@@ -88,7 +91,7 @@ class Conversor:
         subfields = (
             list(
                 chain.from_iterable(
-                    [[s[0], s[2:].strip()] for s in descricao[1:].split("$")]
+                    [[subfield[0], subfield[2:]] for subfield in descricao[1:].split("$")]
                 )
             )
             if descricao
@@ -106,6 +109,7 @@ class Conversor:
 
     @staticmethod
     def convert_dados_marc_to_record(dados_marc: DadosMarc, id: int) -> Record:
+        """Receive DadosMarc objects and build a Pymarc Record"""
         record = Record(leader="     nam a22      a 4500")
 
         for paragrafo, indicador, descricao in zip(
@@ -153,6 +157,8 @@ class PergamumDownloader:
             self.base[url] = PergamumWebServiceRequest(url)
 
     def build_record(self, url: str, id: int) -> Record:
+        """Build a Record object from the xml response, validated from
+        the DadosMarc model"""
         self._add_base(url)
         xml_response = self.base[url].busca_marc(id)
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
@@ -173,9 +179,11 @@ class PergamumDownloader:
         return Conversor.convert_dados_marc_to_record(dados_marc, id)
 
     def get_marc_iso(self, url: str, id: int) -> BytesIO:
+        """Get the traditional ISO 2709 MARC record format"""
         return BytesIO(self.build_record(url, id).as_marc())
 
     def get_marc_xml(self, url: str, id: int) -> str:
+        """Get the MARCXML format with XML declaration and namespaces"""
         node = pymarc.marcxml.record_to_xml_node(
             self.build_record(url, id), namespace=True
         )

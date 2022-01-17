@@ -2,8 +2,7 @@ import re
 import xml.etree.ElementTree as ET
 from io import BytesIO
 from itertools import chain
-from typing import Dict
-from typing import List
+from typing import Dict, Optional
 
 import pymarc  # type: ignore
 import xmltodict
@@ -27,9 +26,9 @@ class PergamumWebServiceException(Exception):
 class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
 
-    paragrafo: List[str]
-    indicador: List[str]
-    descricao: List[str]
+    paragrafo: list[str]
+    indicador: list[Optional[str]]
+    descricao: list[Optional[str]]
 
 
 class PergamumWebServiceRequest:
@@ -46,7 +45,7 @@ class PergamumWebServiceRequest:
         except HTTPError as error:
             raise PergamumWebServiceException(
                 message=f"{base_url}/web_service/servidor_ws.php?wsdl returned {error.response.status_code}"
-            ) from error
+            )
         except XMLSyntaxError:
             raise PergamumWebServiceException(
                 "Invalid response from Pergamum WebService."

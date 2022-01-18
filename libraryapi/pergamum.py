@@ -2,7 +2,8 @@ import re
 import xml.etree.ElementTree as ET
 from io import BytesIO
 from itertools import chain
-from typing import Dict, Optional
+from typing import Dict
+from typing import Optional
 
 import pymarc  # type: ignore
 import xmltodict
@@ -19,6 +20,7 @@ from zeep.transports import Transport
 
 class PergamumWebServiceException(Exception):
     """Represents an exception object in the Pergamum Web Service"""
+
     def __init__(self, message: str) -> None:
         self.message = message
 
@@ -82,29 +84,27 @@ class Conversor:
                 indicators[0] = indicador[-4]
                 indicators[1] = indicador[-2]
 
-        # Subfields handling:
-        # Split the contents at "$", ignoring the first one to avoid the
-        # creation of an empty segment. Split them again getting the first
-        # position as the subfield code and the rest as the value.
+        field = Field(paragrafo.strip(), indicators=indicators)
 
-        subfields = (
-            list(
+        if descricao and ("$" in descricao):  # contains subfileds
+            # Subfields handling:
+            # Split the contents at "$", ignoring the first one to avoid the
+            # creation of an empty segment. Split them again getting the first
+            # position as the subfield code and the rest as the value.
+            subfields = list(
                 chain.from_iterable(
-                    [[subfield[0], subfield[2:]] for subfield in descricao[1:].split("$")]
+                    [
+                        [subfield[0], subfield[2:]]
+                        for subfield in descricao[1:].split("$")
+                    ]
                 )
             )
-            if descricao
-            else None
-        )
+            field.subfields = subfields
 
-        return Field(
-            tag=paragrafo.strip(),
-            indicators=indicators,
-            subfields=subfields,
-            data=descricao.replace("#", " ").strip()
-            if int(paragrafo) < 10
-            else "",  # Only control fields has "data" param
-        )
+        if int(paragrafo) < 10:  # Only control fields has "data" param
+            field.data = descricao.replace("#", " ").strip()
+
+        return field
 
     @staticmethod
     def convert_dados_marc_to_record(dados_marc: DadosMarc, id: int) -> Record:

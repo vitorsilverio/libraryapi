@@ -6,7 +6,7 @@ certifi==2021.10.8
 charset-normalizer==2.0.10
 click==8.0.3
 colorama==0.4.4
-fastapi==0.70.1
+fastapi==0.72.0
 h11==0.12.0
 httptools==0.3.0
 idna==3.3
@@ -23,7 +23,7 @@ six==1.16.0
 sniffio==1.2.0
 typing-extensions==4.0.1
 urllib3==1.26.7
-uvicorn[standard]==0.16.0
+uvicorn[standard]==0.17.0
 xmltodict==0.12.0
 websockets==10.1
 zeep==4.1.0

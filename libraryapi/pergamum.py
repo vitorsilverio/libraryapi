@@ -86,7 +86,7 @@ class Conversor:
 
         field = Field(paragrafo.strip(), indicators=indicators)
 
-        if descricao and ("$" in descricao):  # contains subfileds
+        if descricao and ("$" in descricao):  # contains subfields
             # Subfields handling:
             # Split the contents at "$", ignoring the first one to avoid the
             # creation of an empty segment. Split them again getting the first
@@ -94,7 +94,7 @@ class Conversor:
             subfields = list(
                 chain.from_iterable(
                     [
-                        [subfield[0], subfield[2:]]
+                        [subfield[0], subfield[2:].strip()]
                         for subfield in descricao[1:].split("$")
                     ]
                 )

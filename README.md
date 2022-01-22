@@ -7,16 +7,16 @@
 [![Dockerhub](https://img.shields.io/docker/pulls/vitorsilverio/libraryapi.svg)](https://hub.docker.com/r/vitorsilverio/libraryapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/vitorsilverio/libraryapi/badge.svg)](https://snyk.io/test/github/vitorsilverio/libraryapi)
 
-An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML) from ILS like Pergamum.
+An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML, mnemonic MARC) from ILS like Pergamum.
 
 ## Running
-### Using docker
+### Using [docker](https://hub.docker.com/r/vitorsilverio/libraryapi)
 - `docker pull vitorsilverio/libraryapi:main`
 - `docker run -d --name libraryapi -p 80:80 vitorsilverio/libraryapi:main`
 
 ### Locally
-- Make sure you have python 3.9+ installed. You may have to prefix `pip` and `uvicorn` commands with `python3.9 -m` if you have more than one python interpreter.
-- You can create a virtualenv before
+- Make sure you have Python 3.9+ installed. You may have to prefix `pip` and `uvicorn` commands with `python3.9 -m` if you have more than one Python interpreter.
+- You can create a [virtualenv](https://virtualenv.pypa.io/) before
 - `pip install -r requirements.txt`
 - `uvicorn app.main:app --port 80`
 
@@ -33,4 +33,4 @@ See a working demo instance at Heroku:
  - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742
 
 ## Contributing
-Please read Contibution.md to know how contributing in code or you can [buy me a ☕](https://www.buymeacoffee.com/vitorsilverio)
+Please read [Contibution.md](CONTRIBUTING.md) to know how to contribute code or [buy me a ☕](https://www.buymeacoffee.com/vitorsilverio)

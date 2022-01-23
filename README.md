@@ -16,8 +16,8 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 
 ### Locally
 - Make sure you have Python 3.9+ installed. You may have to prefix `pip` and `uvicorn` commands with `python3.9 -m` if you have more than one Python interpreter.
-- You can create a [virtualenv](https://virtualenv.pypa.io/) before
-- `pip install -r requirements.txt`
+- Install [Pipenv](https://pipenv.pypa.io/en/latest/)
+- `pipenv install --deploy`
 - `uvicorn app.main:app --port 80`
 
 ## Endpoints and services

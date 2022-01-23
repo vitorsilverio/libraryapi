@@ -7,8 +7,9 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential
 
-COPY requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+COPY Pipfile .
+RUN pip install pipenv
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
 
 FROM python:3.10-slim
@@ -16,11 +17,8 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/wheels /wheels
-COPY --from=builder /app/requirements.txt .
-
-RUN python -m pip install --upgrade pip && \
-    pip install --no-cache /wheels/*
+COPY --from=builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
 
 RUN addgroup --gid 1001 --system app && \
     adduser --no-create-home --shell /bin/false --disabled-password --uid 1001 --system --group app

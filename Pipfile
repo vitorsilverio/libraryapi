@@ -15,6 +15,10 @@ zeep = "==4.1.0"
 pre-commit = "==2.17.0"
 pytest = "==6.2.5"
 pipenv = "==2022.1.8"
+black = "*"
+flake8 = "*"
+reorder-python-imports = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.10"

@@ -23,7 +23,7 @@ def test_api_v2():
         "/api/v2/pergamum/339742",
         headers={
             "Accept": "application/xml",
-            "server": "https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
+            "Server": "https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
         },
     )
     assert response.headers["content-type"] == "application/xml; charset=utf-8"

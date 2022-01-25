@@ -1,4 +1,5 @@
 # libraryapi
+
 ![deploy](https://github.com/vitorsilverio/libraryapi/actions/workflows/deploy.yml/badge.svg)
 ![lint](https://github.com/vitorsilverio/libraryapi/actions/workflows/lint.yml/badge.svg)
 ![Snyk](https://github.com/vitorsilverio/libraryapi/actions/workflows/snyk.yml/badge.svg)
@@ -10,27 +11,71 @@
 An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML, mnemonic MARC) from ILS like Pergamum.
 
 ## Running
-### Using [docker](https://hub.docker.com/r/vitorsilverio/libraryapi)
+
+### Using [Docker](https://hub.docker.com/r/vitorsilverio/libraryapi)
+
 - `docker pull vitorsilverio/libraryapi:main`
 - `docker run -d --name libraryapi -p 80:80 vitorsilverio/libraryapi:main`
 
 ### Locally
+
 - Make sure you have Python 3.10+ installed. You may have to prefix `pip` and `uvicorn` commands with `python3.10 -m` if you have more than one Python interpreter.
-- Install [Pipenv](https://pipenv.pypa.io/en/latest/)
+- Install [Pipenv](https://pipenv.pypa.io/)
 - `pipenv install --deploy`
 - `uvicorn app.main:app --port 80`
 
 ## Endpoints and services
+
 Check the endpoints in documentation page at http://**deploy-ip**:**port**/docs
 
 ## Demo
-See a working demo instance at Heroku:
- - https://libraryapi-demo.herokuapp.com/docs
 
-### Examples
- - A MARC ISO 2709 record from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrc?url=https://pergamum.ufsc.br/pergamum&id=339742
- - A MARCXML record from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742
- - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742
+See a working demo instance at Heroku:
+
+- <https://libraryapi-demo.herokuapp.com/docs>
+
+### Examples (version 2)
+
+Using query params:
+
+- A MARC ISO 2709 record from Pergamum:
+
+<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/marc>
+
+- A MARCXML record from Pergamum:
+
+<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/xml>
+
+- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
+
+<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=text/plain>
+
+Using headers:
+
+- A MARC ISO 2709 record from Pergamum:
+
+```console
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" -H "Accept: application/marc" -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php"
+```
+
+- A MARCXML record from Pergamum:
+
+```console
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" -H "Accept: application/xml" -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php"
+```
+
+- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
+
+```console
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" -H "Accept: text/plain" -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php"
+```
+
+#### Version 1 style (deprecated)
+
+- A MARC ISO 2709 record from Pergamum: <https://libraryapi-demo.herokuapp.com/pergamum/mrc?url=https://pergamum.ufsc.br/pergamum&id=339742>
+- A MARCXML record from Pergamum: <https://libraryapi-demo.herokuapp.com/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742>
+- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742>
 
 ## Contributing
+
 Please read [Contibution.md](CONTRIBUTING.md) to know how to contribute code or [buy me a ☕](https://www.buymeacoffee.com/vitorsilverio)

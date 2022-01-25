@@ -33,7 +33,7 @@ def txt_provider(record: Record) -> Response:
     return response
 
 
-metadata_provider = {
+media_types = {
     "application/marc": marc_provider,
     "application/xml": xml_provider,
     "text/plain": txt_provider,

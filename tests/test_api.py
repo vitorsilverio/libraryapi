@@ -16,3 +16,15 @@ def test_download_marc_xml_from_pergamum():
     )
     assert response.headers["content-type"] == "application/xml; charset=utf-8"
     assert response.status_code == 200
+
+
+def test_api_v2():
+    response = client.get(
+        "/api/v2/pergamum/339742",
+        headers={
+            "Accept": "application/xml",
+            "server": "https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
+        },
+    )
+    assert response.headers["content-type"] == "application/xml; charset=utf-8"
+    assert response.status_code == 200

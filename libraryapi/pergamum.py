@@ -1,12 +1,8 @@
 import re
-import xml.etree.ElementTree as ET
-from io import BytesIO
 from itertools import chain
 from typing import Dict
-from typing import Optional
 
-import pymarc  # type: ignore
-import xmltodict
+import xmltodict  # type: ignore
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
 from pymarc import Field  # type: ignore
@@ -29,8 +25,8 @@ class DadosMarc(BaseModel):
     """Represents a Dados_marc object received from Pergamum Web Service"""
 
     paragrafo: list[str]
-    indicador: list[Optional[str]]
-    descricao: list[Optional[str]]
+    indicador: list[str | None]
+    descricao: list[str | None]
 
 
 class PergamumWebServiceRequest:
@@ -40,14 +36,19 @@ class PergamumWebServiceRequest:
         session = Session()
         session.headers.update({"Accept-Encoding": "identity"})
         try:
+            # Keep this for backward compatibility
+            if "/web_service/servidor_ws.php" not in base_url:
+                base_url = f"{base_url}/web_service/servidor_ws.php"
             self.client = Client(
-                f"{base_url}/web_service/servidor_ws.php?wsdl",
+                f"{base_url}?wsdl",
                 transport=Transport(session=session),
             )
         except HTTPError as error:
             raise PergamumWebServiceException(
-                message=f"{base_url}/web_service/servidor_ws.php?wsdl returned {error.response.status_code}"
+                message=f"{base_url}?wsdl returned {error.response.status_code}"
             )
+        except FileNotFoundError:
+            raise PergamumWebServiceException(message="Server not found")
         except XMLSyntaxError:
             raise PergamumWebServiceException(
                 "Invalid response from Pergamum WebService."
@@ -176,14 +177,3 @@ class PergamumDownloader:
                 "Did not received a valid record. Make sure the id is valid"
             )
         return Conversor.convert_dados_marc_to_record(dados_marc, id)
-
-    def get_marc_iso(self, url: str, id: int) -> BytesIO:
-        """Get the traditional ISO 2709 MARC record format"""
-        return BytesIO(self.build_record(url, id).as_marc())
-
-    def get_marc_xml(self, url: str, id: int) -> str:
-        """Get the MARCXML format with XML declaration and namespaces"""
-        node = pymarc.marcxml.record_to_xml_node(
-            self.build_record(url, id), namespace=True
-        )
-        return ET.tostring(node, encoding="utf-8", xml_declaration=True)

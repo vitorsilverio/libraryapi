@@ -22,9 +22,7 @@ async def get_marc_iso(url: str, id: int) -> Response:
 
 @app.get("/pergamum/xml")
 async def get_marc_xml(url: str, id: int) -> Response:
-    return await get_pergamum_record(
-        id, url=url, media_type="application/xml"
-    )
+    return await get_pergamum_record(id, url=url, media_type="application/xml")
 
 
 @app.get("/pergamum/mrk")
@@ -66,9 +64,7 @@ async def get_pergamum_record(
         accept = media_type
     if server:
         record = pergamumDownloader.build_record(server, id)
-        response = util.media_types.get(accept, util.marc_provider)(
-            record
-        )
+        response = util.media_types.get(accept, util.marc_provider)(record)
         return response
     return Response(
         "Neither the server Header nor the URL query param was specified",

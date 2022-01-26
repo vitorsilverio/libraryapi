@@ -8,7 +8,7 @@
 [![Dockerhub](https://img.shields.io/docker/pulls/vitorsilverio/libraryapi.svg)](https://hub.docker.com/r/vitorsilverio/libraryapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/vitorsilverio/libraryapi/badge.svg)](https://snyk.io/test/github/vitorsilverio/libraryapi)
 
-An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML, mnemonic MARC) from ILS like Pergamum.
+An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML, mnemonic MARC, JSON) from ILS like Pergamum.
 
 ## Running
 
@@ -50,24 +50,42 @@ Using query params:
 
 <https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=text/plain>
 
+- A JSON MARC record from Pergamum (default, if no "media_type" is specified or if it is "application/json"):
+
+<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/json>
+
 Using headers:
 
 - A MARC ISO 2709 record from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" -H "Accept: application/marc" -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php"
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+-H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+-H "Accept: application/marc"
 ```
 
 - A MARCXML record from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" -H "Accept: application/xml" -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php"
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+-H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+-H "Accept: application/xml"
 ```
 
 - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" -H "Accept: text/plain" -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php"
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+-H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+-H "Accept: text/plain"
+```
+
+- A JSON MARC record from Pergamum (default, if no "media_type" is specified or if it is "application/json"):
+
+```console
+curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+-H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+-H "Accept: application/json"
 ```
 
 #### Version 1 style (deprecated)

@@ -42,7 +42,7 @@ async def get_pergamum_record(
     accept: str = Header(
         default=None,
         description="Media type required. Available options are "
-        + "(application/marc, application/xml, text/plain)",
+        + "(application/marc, application/xml, text/plain, application/json)",
     ),
     url: str
     | None = Query(
@@ -54,7 +54,7 @@ async def get_pergamum_record(
     | None = Query(
         default=None,
         description="Media type required. Available options are "
-        + "(application/marc, application/xml, text/plain)",
+        + "(application/marc, application/xml, text/plain, application/json)",
         example="application/marc",
     ),
 ) -> Response:
@@ -64,7 +64,7 @@ async def get_pergamum_record(
         accept = media_type
     if server:
         record = pergamumDownloader.build_record(server, id)
-        response = util.media_types.get(accept, util.marc_provider)(record)
+        response = util.media_types.get(accept, util.json_provider)(record)
         return response
     return Response(
         "Neither the server Header nor the URL query param was specified",

@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from io import BytesIO
+from typing import Callable
 
 import pymarc  # type: ignore
 from fastapi.responses import Response
@@ -33,8 +34,15 @@ def txt_provider(record: Record) -> Response:
     return response
 
 
-media_types = {
+def json_provider(record: Record) -> Response:
+    return Response(
+        record.as_json(), media_type="application/json; charset=utf-8"
+    )
+
+
+media_types: dict[str, Callable[[Record], Response]] = {
     "application/marc": marc_provider,
     "application/xml": xml_provider,
     "text/plain": txt_provider,
+    "application/json": json_provider,
 }

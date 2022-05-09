@@ -8,7 +8,7 @@ fastapi = "==0.76.0"
 pymarc = "==4.2.0"
 requests = "==2.27.1"
 uvicorn = {version = "==0.17.6", extras = ["standard"]}
-xmltodict = "==0.12.0"
+xmltodict = "==0.13.0"
 zeep = "==4.1.0"
 
 [dev-packages]

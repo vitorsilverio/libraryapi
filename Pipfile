@@ -14,7 +14,7 @@ zeep = "==4.1.0"
 [dev-packages]
 pre-commit = "==2.19.0"
 pytest = "==7.1.2"
-pipenv = "==2022.5.2"
+pipenv = "==2022.6.7"
 black = "*"
 flake8 = "*"
 reorder-python-imports = "*"

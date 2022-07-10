@@ -21,8 +21,9 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 
 - Make sure you have Python 3.10+ installed. You may have to prefix `pip` and `uvicorn` commands with `python3.10 -m` if you have more than one Python interpreter.
 - Install [Pipenv](https://pipenv.pypa.io/) with pip: `pip install --user pipenv`
-- `pipenv install --deploy` (In Ubuntu 22.04: `SETUPTOOLS_USE_DISTUTILS=stdlib pipenv install --deploy`)
-- `uvicorn app.main:app --port 80`
+- In Ubuntu 22.04: `export SETUPTOOLS_USE_DISTUTILS=stdlib`
+- `pipenv install --deploy`
+- `uvicorn app.main:app --port 8080`
 
 ## Endpoints and services
 

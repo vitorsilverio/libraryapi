@@ -9,21 +9,21 @@ RUN apt-get update && \
 
 COPY Pipfile .
 RUN pip install pipenv
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
-
+RUN python -m venv /venv
+RUN . /venv/bin/activate && pipenv install --deploy
 
 FROM python:3.10-slim
 # this stage contains the final code
 
 WORKDIR /app
 
-COPY --from=builder /app/.venv /app/.venv
-ENV PATH="/app/.venv/bin:$PATH"
-
 RUN addgroup --gid 1001 --system app && \
     adduser --no-create-home --shell /bin/false --disabled-password --uid 1001 --system --group app
 
 USER app
+
+COPY --from=builder --chown=app:app /venv /venv
+ENV PATH="/venv/bin/:${PATH}"
 
 COPY . /app/
 

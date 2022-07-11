@@ -16,6 +16,8 @@ docker-compose.yml
 **/.DS_Store
 **/venv
 **/env
+**/.venv
+**/.env
 Procfile
 runtime.txt
 requirements_dev.txt

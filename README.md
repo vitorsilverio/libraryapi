@@ -24,7 +24,7 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 - In Ubuntu 22.04: `export SETUPTOOLS_USE_DISTUTILS=stdlib`
 - `pipenv install --deploy`
 - `pipenv shell`
-- `uvicorn app.main:app --port 8000` append `--reload` if you are developing
+- `uvicorn app.main:app --port 80` append `--reload` if you are developing and change the port
 
 ## Endpoints and services
 

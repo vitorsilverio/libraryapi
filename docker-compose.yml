@@ -1,3 +1,4 @@
+# Use this compose only for local development
 version: '3.3'
 services:
     app:

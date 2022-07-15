@@ -1,0 +1,7 @@
+version: '3.3'
+services:
+    app:
+        container_name: libraryapi
+        ports:
+            - '8000:80'
+        image: vitorsilverio/libraryapi:latest

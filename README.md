@@ -15,7 +15,7 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 ### Using [Docker](https://hub.docker.com/r/vitorsilverio/libraryapi)
 
 - `docker pull vitorsilverio/libraryapi:main`
-- `docker run -d --name libraryapi -p 80:80 vitorsilverio/libraryapi:main`
+- `docker run -d --name libraryapi -p 8000:80 vitorsilverio/libraryapi:main`
 
 ### Locally
 
@@ -24,7 +24,7 @@ An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki
 - In Ubuntu 22.04: `export SETUPTOOLS_USE_DISTUTILS=stdlib`
 - `pipenv install --deploy`
 - `pipenv shell`
-- `uvicorn app.main:app --port 8080` append `--reload` if you are developing
+- `uvicorn app.main:app --port 8000` append `--reload` if you are developing
 
 ## Endpoints and services
 

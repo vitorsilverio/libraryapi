@@ -1,4 +1,4 @@
-FROM python:3.10-slim as builder
+FROM python:slim as builder
 # This stage installs gcc to compile all python modules that requires it.
 # We don't need gcc in final stage
 
@@ -12,7 +12,7 @@ RUN pip install pipenv
 RUN python -m venv /venv
 RUN . /venv/bin/activate && pipenv install --deploy
 
-FROM python:3.10-slim
+FROM python:slim
 # this stage contains the final code
 
 WORKDIR /app

@@ -48,7 +48,9 @@ class PergamumWebServiceRequest:
                 message=f"{base_url}?wsdl returned {exc.response.status_code}"
             ) from exc
         except FileNotFoundError as exc:
-            raise PergamumWebServiceException(message="Server not found") from exc
+            raise PergamumWebServiceException(
+                message="Server not found"
+            ) from exc
         except XMLSyntaxError as exc:
             raise PergamumWebServiceException(
                 "Invalid response from Pergamum WebService."
@@ -56,7 +58,9 @@ class PergamumWebServiceRequest:
 
     async def busca_marc(self, cod_acervo: int) -> str:
         """Returns the xml response from the "busca_marc" operation"""
-        return await self.client.service.busca_marc(codigo_acervo_temp=cod_acervo)
+        return await self.client.service.busca_marc(
+            codigo_acervo_temp=cod_acervo
+        )
 
 
 class Conversor:

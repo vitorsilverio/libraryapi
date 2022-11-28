@@ -1,4 +1,4 @@
-FROM python:slim as builder
+FROM python:3-slim-bullseye as builder
 # This stage installs gcc to compile all python modules that requires it.
 # We don't need gcc in final stage
 
@@ -12,7 +12,7 @@ RUN pip install pipenv
 RUN python -m venv /venv
 RUN . /venv/bin/activate && pipenv install --deploy
 
-FROM python:slim
+FROM python:3-slim-bullseye
 # this stage contains the final code
 
 WORKDIR /app

@@ -3,15 +3,15 @@ from itertools import chain
 from typing import Dict
 
 import xmltodict  # type: ignore
+from httpx import AsyncClient
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
 from pymarc import Field  # type: ignore
 from pymarc import Record
-from requests import Session  # type: ignore
 from requests.exceptions import HTTPError  # type: ignore
-from zeep import Client
+from zeep import AsyncClient as Client
 from zeep.exceptions import XMLSyntaxError
-from zeep.transports import Transport
+from zeep.transports import AsyncTransport
 
 
 class PergamumWebServiceException(Exception):
@@ -33,30 +33,30 @@ class PergamumWebServiceRequest:
     """Represents a connection that make requests to Pergamum Web Service"""
 
     def __init__(self, base_url: str) -> None:
-        session = Session()
-        session.headers.update({"Accept-Encoding": "identity"})
+        httpx_client = AsyncClient()
+        httpx_client.headers.update({"Accept-Encoding": "identity"})
         try:
             # Keep this for backward compatibility
             if "/web_service/servidor_ws.php" not in base_url:
                 base_url = f"{base_url}/web_service/servidor_ws.php"
             self.client = Client(
                 f"{base_url}?wsdl",
-                transport=Transport(session=session),
+                transport=AsyncTransport(client=httpx_client),
             )
-        except HTTPError as error:
+        except HTTPError as exc:
             raise PergamumWebServiceException(
-                message=f"{base_url}?wsdl returned {error.response.status_code}"
-            )
-        except FileNotFoundError:
-            raise PergamumWebServiceException(message="Server not found")
-        except XMLSyntaxError:
+                message=f"{base_url}?wsdl returned {exc.response.status_code}"
+            ) from exc
+        except FileNotFoundError as exc:
+            raise PergamumWebServiceException(message="Server not found") from exc
+        except XMLSyntaxError as exc:
             raise PergamumWebServiceException(
                 "Invalid response from Pergamum WebService."
-            )
+            ) from exc
 
-    def busca_marc(self, cod_acervo: int) -> str:
+    async def busca_marc(self, cod_acervo: int) -> str:
         """Returns the xml response from the "busca_marc" operation"""
-        return self.client.service.busca_marc(codigo_acervo_temp=cod_acervo)
+        return await self.client.service.busca_marc(codigo_acervo_temp=cod_acervo)
 
 
 class Conversor:
@@ -156,11 +156,11 @@ class PergamumDownloader:
         if url not in self.base:
             self.base[url] = PergamumWebServiceRequest(url)
 
-    def build_record(self, url: str, id: int) -> Record:
+    async def build_record(self, url: str, id: int) -> Record:
         """Build a Record object from the xml response, validated from
         the DadosMarc model"""
         self._add_base(url)
-        xml_response = self.base[url].busca_marc(id)
+        xml_response = await self.base[url].busca_marc(id)
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
         xml_response = re.sub(r"&", "&amp;", xml_response)
         xml_response = re.sub(
@@ -172,8 +172,8 @@ class PergamumDownloader:
                     "Dados_marc"
                 ]
             )
-        except ValidationError:
+        except ValidationError as exc:
             raise PergamumWebServiceException(
                 "Did not received a valid record. Make sure the id is valid"
-            )
+            ) from exc
         return Conversor.convert_dados_marc_to_record(dados_marc, id)

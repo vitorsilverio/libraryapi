@@ -63,7 +63,7 @@ async def get_pergamum_record(
     if media_type:
         accept = media_type
     if server:
-        record = pergamumDownloader.build_record(server, id)
+        record = await pergamumDownloader.build_record(server, id)
         response = util.media_types.get(accept, util.json_provider)(record)
         return response
     return Response(

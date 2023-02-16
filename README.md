@@ -33,7 +33,7 @@ Check the endpoints in documentation page at http://**deploy-ip**:**port**/docs
 
 See a working demo instance at Heroku:
 
-- <https://libraryapi-demo.herokuapp.com/docs>
+- <https://libraryapi.sites.ufsc.br/docs>
 
 ### Examples (version 2)
 
@@ -41,26 +41,26 @@ Using query params:
 
 - A MARC ISO 2709 record from Pergamum:
 
-<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/marc>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/marc>
 
 - A MARCXML record from Pergamum:
 
-<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/xml>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/xml>
 
 - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
 
-<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=text/plain>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=text/plain>
 
 - A JSON MARC record from Pergamum (default, if no "media_type" is specified or if it is "application/json"):
 
-<https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/json>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/json>
 
 Using headers:
 
 - A MARC ISO 2709 record from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742" \
 -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: application/marc"
 ```
@@ -68,7 +68,7 @@ curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
 - A MARCXML record from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742" \
 -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: application/xml"
 ```
@@ -76,7 +76,8 @@ curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
 - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+curl "https://libraryapi-demo.
+.com/api/v2/pergamum/339742" \
 -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: text/plain"
 ```
@@ -84,16 +85,16 @@ curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
 - A JSON MARC record from Pergamum (default, if no "media_type" is specified or if it is "application/json"):
 
 ```console
-curl "https://libraryapi-demo.herokuapp.com/api/v2/pergamum/339742" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742" \
 -H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: application/json"
 ```
 
 #### Version 1 style (deprecated)
 
-- A MARC ISO 2709 record from Pergamum: <https://libraryapi-demo.herokuapp.com/pergamum/mrc?url=https://pergamum.ufsc.br/pergamum&id=339742>
-- A MARCXML record from Pergamum: <https://libraryapi-demo.herokuapp.com/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742>
-- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi-demo.herokuapp.com/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742>
+- A MARC ISO 2709 record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://pergamum.ufsc.br/pergamum&id=339742>
+- A MARCXML record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742>
+- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742>
 
 ## Contributing
 

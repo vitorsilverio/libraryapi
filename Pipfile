@@ -12,7 +12,7 @@ zeep = "==4.2.1"
 httpx = "==0.23.3"
 
 [dev-packages]
-pre-commit = "==3.0.4"
+pre-commit = "==3.1.0"
 pytest = "==7.2.1"
 pipenv = "==2023.2.18"
 black = "*"

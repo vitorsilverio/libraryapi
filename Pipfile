@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "==0.92.0"
+fastapi = "==0.93.0"
 pymarc = "==4.2.2"
 uvicorn = {version = "==0.20.0", extras = ["standard"]}
 xmltodict = "==0.13.0"

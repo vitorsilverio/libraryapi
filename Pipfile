@@ -14,7 +14,7 @@ httpx = "==0.23.3"
 [dev-packages]
 pre-commit = "==3.1.1"
 pytest = "==7.2.2"
-pipenv = "==2023.2.18"
+pipenv = "==2023.3.20"
 black = "*"
 flake8 = "*"
 reorder-python-imports = "*"

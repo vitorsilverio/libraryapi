@@ -3,13 +3,13 @@ from itertools import chain
 from typing import Dict
 
 import xmltodict  # type: ignore
-from httpx import AsyncClient
+from httpx import AsyncClient, ConnectError
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
 from pymarc import Field  # type: ignore
 from pymarc import Record
 from requests.exceptions import HTTPError  # type: ignore
-from zeep import AsyncClient as Client
+from zeep import AsyncClient as ZeepAsyncClient
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import AsyncTransport
 
@@ -39,7 +39,7 @@ class PergamumWebServiceRequest:
             # Keep this for backward compatibility
             if "/web_service/servidor_ws.php" not in base_url:
                 base_url = f"{base_url}/web_service/servidor_ws.php"
-            self.client = Client(
+            self.client = ZeepAsyncClient(
                 f"{base_url}?wsdl",
                 transport=AsyncTransport(client=httpx_client),
             )
@@ -58,9 +58,13 @@ class PergamumWebServiceRequest:
 
     async def busca_marc(self, cod_acervo: int) -> str:
         """Returns the xml response from the "busca_marc" operation"""
-        return await self.client.service.busca_marc(
-            codigo_acervo_temp=cod_acervo
-        )
+        try:
+            return await self.client.service.busca_marc(
+                codigo_acervo_temp=cod_acervo
+            )
+        except Exception:
+            return None
+
 
 
 class Conversor:
@@ -165,6 +169,8 @@ class PergamumDownloader:
         the DadosMarc model"""
         self._add_base(url)
         xml_response = await self.base[url].busca_marc(id)
+        if not xml_response:
+            raise PergamumWebServiceException("Failed to retrieve record from `busca_marc` service.")
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
         xml_response = re.sub(r"&", "&amp;", xml_response)
         xml_response = re.sub(

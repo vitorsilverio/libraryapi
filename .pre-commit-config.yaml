@@ -1,44 +1,32 @@
 repos:
-  - repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.6.0
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: 'v0.0.263'
     hooks:
-      - id: reorder-python-imports
-        args: [--application-directories=./]
-  - repo: https://github.com/ambv/black
-    rev: 21.12b0
-    hooks:
-      - id: black
-        language_version: python3
-        args: [./]
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
-    hooks:
-      - id: flake8
-        args: [--config=./.flake8]
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
-    hooks:
-      - id: trailing-whitespace
-      - id: check-yaml
-      - id: check-added-large-files
-      - id: debug-statements
-        language_version: python3
+      - id: ruff 
+        name: ruff - linter
+        args: [ --fix, --exit-non-zero-on-fix ]
+
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.31.0
+    rev: v3.3.2
     hooks:
       - id: pyupgrade
         args: [--py36-plus]
+        name: pyupgrade - upgrade python syntax
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.931
+    rev: v1.2.0
     hooks:
       - id: mypy
+        name: mypy - optional static type checker
 
   - repo: local
     hooks:
       - id: pytest
-        name: Check pytest unit tests pass
-        entry: pipenv run pytest
-        pass_filenames: false
-        language: system
+        name:  pytest - unit tests
+        entry: pipenv run pytest tests --disable-warnings
+        stages: [commit]
         types: [python]
+        language: system
+        pass_filenames: false
+        always_run: true

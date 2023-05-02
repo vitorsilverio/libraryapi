@@ -1,15 +1,16 @@
 import re
-from itertools import chain
 from typing import Dict
 
 import xmltodict  # type: ignore
-from httpx import AsyncClient, ConnectError
+from httpx import AsyncClient
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError
 from pymarc import Field  # type: ignore
 from pymarc import Record
+from pymarc import Subfield
 from requests.exceptions import HTTPError  # type: ignore
 from zeep import AsyncClient as ZeepAsyncClient
+from zeep.exceptions import TransportError
 from zeep.exceptions import XMLSyntaxError
 from zeep.transports import AsyncTransport
 
@@ -33,15 +34,15 @@ class PergamumWebServiceRequest:
     """Represents a connection that make requests to Pergamum Web Service"""
 
     def __init__(self, base_url: str) -> None:
-        httpx_client = AsyncClient()
-        httpx_client.headers.update({"Accept-Encoding": "identity"})
+        self.httpx_client = AsyncClient(follow_redirects=True)
+        self.httpx_client.headers.update({"Accept-Encoding": "identity"})
         try:
             # Keep this for backward compatibility
             if "/web_service/servidor_ws.php" not in base_url:
                 base_url = f"{base_url}/web_service/servidor_ws.php"
             self.client = ZeepAsyncClient(
                 f"{base_url}?wsdl",
-                transport=AsyncTransport(client=httpx_client),
+                transport=AsyncTransport(client=self.httpx_client),
             )
         except HTTPError as exc:
             raise PergamumWebServiceException(
@@ -56,15 +57,24 @@ class PergamumWebServiceRequest:
                 "Invalid response from Pergamum WebService."
             ) from exc
 
-    async def busca_marc(self, cod_acervo: int) -> str:
+    async def busca_marc(self, cod_acervo: int) -> str | None:
         """Returns the xml response from the "busca_marc" operation"""
         try:
-            return await self.client.service.busca_marc(
-                codigo_acervo_temp=cod_acervo
-            )
-        except Exception:
+            with self.client.settings(force_https=False):
+                return await self.client.service.busca_marc(
+                    codigo_acervo_temp=cod_acervo
+                )
+
+        except TransportError as e:
+            # Pergamum servers can return gzip response if Encoding = identity
+            # Reset accept-encoding when it happens
+            if "Server returned response (200) with invalid XML:" in str(e):
+                self.httpx_client.headers.update({"Accept-Encoding": "*"})
+                return await self.busca_marc(cod_acervo)
             return None
 
+        except Exception:
+            return None
 
 
 class Conversor:
@@ -93,21 +103,17 @@ class Conversor:
                 indicators[0] = indicador[-4]
                 indicators[1] = indicador[-2]
 
-        field = Field(paragrafo.strip(), indicators=indicators)
+        field = Field(tag=paragrafo.strip(), indicators=indicators)
 
         if descricao and ("$" in descricao):  # contains subfields
             # Subfields handling:
             # Split the contents at "$", ignoring the first one to avoid the
             # creation of an empty segment. Split them again getting the first
             # position as the subfield code and the rest as the value.
-            subfields = list(
-                chain.from_iterable(
-                    [
-                        [subfield[0], subfield[2:].strip()]
-                        for subfield in descricao[1:].split("$")
-                    ]
-                )
-            )
+            subfields = [
+                Subfield(code=subfield[0], value=subfield[2:].strip())
+                for subfield in descricao[1:].split("$")
+            ]
             field.subfields = subfields
 
         if int(paragrafo) < 10:  # Only control fields has "data" param
@@ -118,7 +124,7 @@ class Conversor:
     @staticmethod
     def convert_dados_marc_to_record(dados_marc: DadosMarc, id: int) -> Record:
         """Receive DadosMarc objects and build a Pymarc Record"""
-        record = Record(leader="     nam a22      a 4500")
+        record = Record(leader=f"{' '*5}nam a22{' '*6}a 4500")
 
         for paragrafo, indicador, descricao in zip(
             dados_marc.paragrafo, dados_marc.indicador, dados_marc.descricao
@@ -170,7 +176,9 @@ class PergamumDownloader:
         self._add_base(url)
         xml_response = await self.base[url].busca_marc(id)
         if not xml_response:
-            raise PergamumWebServiceException("Failed to retrieve record from `busca_marc` service.")
+            raise PergamumWebServiceException(
+                "Failed to retrieve record from `busca_marc` service."
+            )
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
         xml_response = re.sub(r"&", "&amp;", xml_response)
         xml_response = re.sub(

@@ -9,7 +9,7 @@ pymarc = "==5.0.0"
 uvicorn = {version = "==0.22.0", extras = ["standard"]}
 xmltodict = "==0.13.0"
 zeep = {version = "==4.2.1", extras = ["async"]}
-httpx = "==0.24.0"
+httpx = "==0.24.1"
 
 [dev-packages]
 pre-commit = "==3.3.1"

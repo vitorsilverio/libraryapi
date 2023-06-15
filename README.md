@@ -1,4 +1,4 @@
-# Descontinued 
+# Discontinued 
 Pergamum 10 uses a new API: Use this project instead https://github.com/jaideraf/getPergamumMarcRecords
 
 # libraryapi

@@ -1,6 +1,3 @@
-# Discontinued 
-Pergamum 10 uses a new API: Use this project instead https://github.com/jaideraf/getPergamumMarcRecords
-
 # libraryapi
 
 ![deploy](https://github.com/vitorsilverio/libraryapi/actions/workflows/deploy.yml/badge.svg)
@@ -11,6 +8,9 @@ Pergamum 10 uses a new API: Use this project instead https://github.com/jaideraf
 [![Dockerhub](https://img.shields.io/docker/pulls/vitorsilverio/libraryapi.svg)](https://hub.docker.com/r/vitorsilverio/libraryapi)
 
 An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML, mnemonic MARC, JSON) from ILS like Pergamum.
+
+## Update
+If you use an instance of Pergamum version 10 or you want to use a JavaScript tool that uses API, see the [Get Pergamum Marc Records](https://github.com/jaideraf/getPergamumMarcRecords) tool.
 
 ## Running
 
@@ -44,60 +44,59 @@ Using query params:
 
 - A MARC ISO 2709 record from Pergamum:
 
-<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/marc>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009?url=https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php&media_type=application/marc>
 
 - A MARCXML record from Pergamum:
 
-<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/xml>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009?url=https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php&media_type=application/xml>
 
 - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
 
-<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=text/plain>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009?url=https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php&media_type=text/plain>
 
 - A JSON MARC record from Pergamum (default, if no "media_type" is specified or if it is "application/json"):
 
-<https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742?url=https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php&media_type=application/json>
+<https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009?url=https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php&media_type=application/json>
 
 Using headers:
 
 - A MARC ISO 2709 record from Pergamum:
 
 ```console
-curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742" \
--H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009" \
+-H "Server: https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: application/marc"
 ```
 
 - A MARCXML record from Pergamum:
 
 ```console
-curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742" \
--H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009" \
+-H "Server: https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: application/xml"
 ```
 
 - A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum:
 
 ```console
-curl "https://libraryapi-demo.
-.com/api/v2/pergamum/339742" \
--H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009" \
+-H "Server: https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: text/plain"
 ```
 
 - A JSON MARC record from Pergamum (default, if no "media_type" is specified or if it is "application/json"):
 
 ```console
-curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/339742" \
--H "Server: https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php" \
+curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009" \
+-H "Server: https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php" \
 -H "Accept: application/json"
 ```
 
 #### Version 1 style (deprecated)
 
-- A MARC ISO 2709 record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://pergamum.ufsc.br/pergamum&id=339742>
-- A MARCXML record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/xml?url=https://pergamum.ufsc.br/pergamum&id=339742>
-- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrk?url=https://pergamum.ufsc.br/pergamum&id=339742>
+- A MARC ISO 2709 record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
+- A MARCXML record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
+- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
 
 ## Contributing
 

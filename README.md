@@ -95,8 +95,8 @@ curl "https://libraryapi.sites.ufsc.br/api/v2/pergamum/676009" \
 #### Version 1 style (deprecated)
 
 - A MARC ISO 2709 record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
-- A MARCXML record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
-- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrc?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
+- A MARCXML record from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/xml?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
+- A mnemonic MARC record (MARCMaker/MarcEdit format) from Pergamum: <https://libraryapi.sites.ufsc.br/pergamum/mrk?url=https://catalogobiblioteca.ufmg.br/pergamum&id=676009>
 
 ## Contributing
 

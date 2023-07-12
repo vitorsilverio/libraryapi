@@ -37,7 +37,7 @@ async def get_pergamum_record(
     | None = Header(
         default=None,
         description="Pergamum Web Service URI",
-        example="https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
+        examples="https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
     ),
     accept: str = Header(
         default=None,
@@ -48,14 +48,14 @@ async def get_pergamum_record(
     | None = Query(
         default=None,
         description="Pergamum Web Service URI",
-        example="https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
+        examples="https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
     ),
     media_type: str
     | None = Query(
         default=None,
         description="Media type required. Available options are "
         + "(application/marc, application/xml, text/plain, application/json)",
-        example="application/marc",
+        examples="application/marc",
     ),
 ) -> Response:
     if url:

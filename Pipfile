@@ -12,7 +12,7 @@ zeep = {version = "==4.2.1", extras = ["async"]}
 httpx = "==0.24.1"
 
 [dev-packages]
-pre-commit = "==3.3.3"
+pre-commit = "==3.4.0"
 pytest = "==7.4.1"
 pipenv = "==2023.8.28"
 ruff = "*"

@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 fastapi = "==0.104.1"
 pymarc = "==5.1.0"
-uvicorn = {version = "==0.23.2", extras = ["standard"]}
+uvicorn = {version = "==0.24.0.post1", extras = ["standard"]}
 xmltodict = "==0.13.0"
 zeep = {version = "==4.2.1", extras = ["async"]}
 httpx = "==0.25.0"

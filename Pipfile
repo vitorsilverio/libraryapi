@@ -14,7 +14,7 @@ httpx = "==0.25.0"
 [dev-packages]
 pre-commit = "==3.5.0"
 pytest = "==7.4.3"
-pipenv = "==2023.10.24"
+pipenv = "==2023.11.15"
 ruff = "*"
 mypy = "*"
 

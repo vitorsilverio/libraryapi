@@ -49,9 +49,7 @@ class PergamumWebServiceRequest:
                 message=f"{base_url}?wsdl returned {exc.response.status_code}"
             ) from exc
         except FileNotFoundError as exc:
-            raise PergamumWebServiceException(
-                message="Server not found"
-            ) from exc
+            raise PergamumWebServiceException(message="Server not found") from exc
         except XMLSyntaxError as exc:
             raise PergamumWebServiceException(
                 "Invalid response from Pergamum WebService."
@@ -144,9 +142,7 @@ class Conversor:
                         Conversor.build_field(paragrafo, indicador, descricao)
                     )
             else:
-                record.add_field(
-                    Conversor.build_field(paragrafo, indicador, descricao)
-                )
+                record.add_field(Conversor.build_field(paragrafo, indicador, descricao))
 
         # Ensure 001 control field has the correct control number
 
@@ -181,14 +177,10 @@ class PergamumDownloader:
             )
         xml_response = re.sub(r"<br\s?/?>", "", xml_response)
         xml_response = re.sub(r"&", "&amp;", xml_response)
-        xml_response = re.sub(
-            r"&amp;lt;br&amp;gt;", "&lt;br&gt;", xml_response
-        )
+        xml_response = re.sub(r"&amp;lt;br&amp;gt;", "&lt;br&gt;", xml_response)
         try:
             dados_marc = DadosMarc(
-                **xmltodict.parse(xml_response, strip_whitespace=False)[
-                    "Dados_marc"
-                ]
+                **xmltodict.parse(xml_response, strip_whitespace=False)["Dados_marc"]
             )
         except ValidationError as exc:
             raise PergamumWebServiceException(

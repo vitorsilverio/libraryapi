@@ -15,9 +15,7 @@ error.configure(app)
 
 @app.get("/pergamum/mrc")
 async def get_marc_iso(url: str, id: int) -> Response:
-    return await get_pergamum_record(
-        id, url=url, media_type="application/marc"
-    )
+    return await get_pergamum_record(id, url=url, media_type="application/marc")
 
 
 @app.get("/pergamum/xml")

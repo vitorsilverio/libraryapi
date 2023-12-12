@@ -9,9 +9,7 @@ from pymarc import Record
 
 
 def attach_file(response, name, extension):
-    response.headers[
-        "Content-Disposition"
-    ] = f"attachment; filename={name}.{extension}"
+    response.headers["Content-Disposition"] = f"attachment; filename={name}.{extension}"
 
 
 def marc_provider(record: Record) -> Response:
@@ -35,9 +33,7 @@ def txt_provider(record: Record) -> Response:
 
 
 def json_provider(record: Record) -> Response:
-    return Response(
-        record.as_json(), media_type="application/json; charset=utf-8"
-    )
+    return Response(record.as_json(), media_type="application/json; charset=utf-8")
 
 
 media_types: dict[str, Callable[[Record], Response]] = {

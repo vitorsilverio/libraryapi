@@ -982,13 +982,13 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pymarc"
-version = "5.1.2"
+version = "5.2.0"
 description = "Read, write and modify MARC bibliographic data"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pymarc-5.1.2-py3-none-any.whl", hash = "sha256:719340150adb600e0a3603e8504bc5b3d2f3e134dd73891e4d927b6f6731bb7d"},
-    {file = "pymarc-5.1.2.tar.gz", hash = "sha256:81ce6bfe9b47170f03d8a99209e4211778ade015a67b1eeb6b30862d4e24ae58"},
+    {file = "pymarc-5.2.0-py3-none-any.whl", hash = "sha256:b5e3ba8c1505c00cd68ce3b519f25a14fb266113daf3ccdd5b30805fbcf49f8d"},
+    {file = "pymarc-5.2.0.tar.gz", hash = "sha256:991c1e5fe560da3336bb41d0ebcf9ecc54cd3b85ffb1d70a6ce45fa2a82d2389"},
 ]
 
 [[package]]
@@ -1614,4 +1614,4 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "36b8127ea243e32020fc4d319a85961c8ea9530573ad4f6ba9355f4c83343463"
+content-hash = "412cacd203e3ced33046f29141e52a3791fc9ed4122eeb44347b32dcdb1334d0"

@@ -4,7 +4,7 @@
 ![lint](https://github.com/vitorsilverio/libraryapi/actions/workflows/lint.yml/badge.svg)
 ![Snyk](https://github.com/vitorsilverio/libraryapi/actions/workflows/snyk.yml/badge.svg)
 ![CodeQL Analysis](https://github.com/vitorsilverio/libraryapi/actions/workflows/codeql-analysis.yml/badge.svg)
-![Tests](https://github.com/vitorsilverio/libraryapi/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/vitorsilverio/libraryapi/actions/workflows/ci.yml/badge.svg)
 [![Dockerhub](https://img.shields.io/docker/pulls/vitorsilverio/libraryapi.svg)](https://hub.docker.com/r/vitorsilverio/libraryapi)
 
 An API to get [MARC (Machine-Readable Cataloging)](https://en.wikipedia.org/wiki/MARC_standards) data in many formats (MARC ISO, MARCXML, mnemonic MARC, JSON) from ILS like Pergamum.

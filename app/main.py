@@ -31,8 +31,7 @@ async def get_marc_mrk(url: str, id: int) -> Response:
 @app.get("/api/v2/pergamum/{id}")
 async def get_pergamum_record(
     id: int,
-    server: str
-    | None = Header(
+    server: str | None = Header(
         default=None,
         description="Pergamum Web Service URI",
         examples="https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
@@ -42,14 +41,12 @@ async def get_pergamum_record(
         description="Media type required. Available options are "
         + "(application/marc, application/xml, text/plain, application/json)",
     ),
-    url: str
-    | None = Query(
+    url: str | None = Query(
         default=None,
         description="Pergamum Web Service URI",
         examples="https://pergamum.ufsc.br/pergamum/web_service/servidor_ws.php",
     ),
-    media_type: str
-    | None = Query(
+    media_type: str | None = Query(
         default=None,
         description="Media type required. Available options are "
         + "(application/marc, application/xml, text/plain, application/json)",

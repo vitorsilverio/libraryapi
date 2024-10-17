@@ -1341,13 +1341,13 @@ files = [
 
 [[package]]
 name = "zeep"
-version = "4.3.0"
+version = "4.3.1"
 description = "A Python SOAP client"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "zeep-4.3.0-py3-none-any.whl", hash = "sha256:4bafaf1997a46b5560c5e928f2bc1b04f04c31dad121ecbe1e952f23aee4c19e"},
-    {file = "zeep-4.3.0.tar.gz", hash = "sha256:26a1658057411fb331ee0602633c31b5c754ff1d7b9b38a15e83737597c080eb"},
+    {file = "zeep-4.3.1-py3-none-any.whl", hash = "sha256:a637aa7eedb6330bb27e8c94c5233ddf23553904323adf9398f8cf5025acb216"},
+    {file = "zeep-4.3.1.tar.gz", hash = "sha256:f45385e9e1b09d5550e0f51ab9fa7c6842713cab7194139372fd82a99c56a06e"},
 ]
 
 [package.dependencies]
@@ -1370,4 +1370,4 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "7cee4f7ceacd8d44f6e3c52d5a25ee86afb0d4b83ed8f09893ce27f3b3bf3bb3"
+content-hash = "b7414a2fb18c80ad02d4060e8f890c72bedc5ce600fb1151da28a969d593a7da"

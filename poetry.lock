@@ -607,13 +607,13 @@ files = [
 
 [[package]]
 name = "pipenv"
-version = "2024.4.0"
+version = "2024.4.1"
 description = "Python Development Workflow for Humans."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pipenv-2024.4.0-py3-none-any.whl", hash = "sha256:282ac23b4a2c60cefe22bf1b747f49d55d87719d538b631e9212276920a36f68"},
-    {file = "pipenv-2024.4.0.tar.gz", hash = "sha256:87b82407a9e2de3cf32a742c131708d7460d5985076c6a9b3c11d774d2929fb1"},
+    {file = "pipenv-2024.4.1-py3-none-any.whl", hash = "sha256:ab26ee98a7d83d342c1f562ee0564094ab1de091e5d5cec4eeaa95fb600de998"},
+    {file = "pipenv-2024.4.1.tar.gz", hash = "sha256:e8ea6105c1cdda7d5c19df7bd6439a006751f3d4e017602c791e7b51314adf84"},
 ]
 
 [package.dependencies]
@@ -1384,4 +1384,4 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5c135df717633c23ee48112bd58b6d63d78ee97ff3b78907d0658625e029c543"
+content-hash = "99cc56f0f73941d57af9abb1bbaeb56017937304196d84698cb6a8de7ffea978"

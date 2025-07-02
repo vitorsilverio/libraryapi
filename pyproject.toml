@@ -25,7 +25,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "==0.115.14"
-pymarc = "==5.2.3"
+pymarc = "==5.3.1"
 uvicorn = {version = "==0.34.3", extras = ["standard"]}
 xmltodict = "==0.14.2"
 zeep = {version = "==4.3.1", extras = ["async"]}

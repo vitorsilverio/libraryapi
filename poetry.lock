@@ -1434,14 +1434,14 @@ files = [
 
 [[package]]
 name = "xmltodict"
-version = "0.15.0"
+version = "0.15.1"
 description = "Makes working with XML feel like you are working with JSON"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "xmltodict-0.15.0-py2.py3-none-any.whl", hash = "sha256:8887783bf1faba1754fc45fdf3fe03fbb3629c811ae57f91c018aace4c58d4ed"},
-    {file = "xmltodict-0.15.0.tar.gz", hash = "sha256:c6d46b4e3413d1e4fc3e5016f0f1c7a5c10f8ce39efaa0cb099af986ecfc9a53"},
+    {file = "xmltodict-0.15.1-py2.py3-none-any.whl", hash = "sha256:dcd84b52f30a15be5ac4c9099a0cb234df8758624b035411e329c5c1e7a49089"},
+    {file = "xmltodict-0.15.1.tar.gz", hash = "sha256:3d8d49127f3ce6979d40a36dbcad96f8bab106d232d24b49efdd4bd21716983c"},
 ]
 
 [[package]]
@@ -1476,4 +1476,4 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "bfbcb561280270f89e2d5a6036427a4e719fe6282bb8b4317b78d805d81aeecb"
+content-hash = "216e4ce73f737d97c6a3db04ab9e1452cb90fbcb4312d6bdfacccba12683989c"

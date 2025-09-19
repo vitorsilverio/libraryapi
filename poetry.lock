@@ -1433,15 +1433,18 @@ files = [
 
 [[package]]
 name = "xmltodict"
-version = "0.15.1"
+version = "1.0.2"
 description = "Makes working with XML feel like you are working with JSON"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "xmltodict-0.15.1-py2.py3-none-any.whl", hash = "sha256:dcd84b52f30a15be5ac4c9099a0cb234df8758624b035411e329c5c1e7a49089"},
-    {file = "xmltodict-0.15.1.tar.gz", hash = "sha256:3d8d49127f3ce6979d40a36dbcad96f8bab106d232d24b49efdd4bd21716983c"},
+    {file = "xmltodict-1.0.2-py3-none-any.whl", hash = "sha256:62d0fddb0dcbc9f642745d8bbf4d81fd17d6dfaec5a15b5c1876300aad92af0d"},
+    {file = "xmltodict-1.0.2.tar.gz", hash = "sha256:54306780b7c2175a3967cad1db92f218207e5bc1aba697d887807c0fb68b7649"},
 ]
+
+[package.extras]
+test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "zeep"
@@ -1476,4 +1479,4 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "f777901b7696280d9c6e97e9956d63e898329250eea1c27be1586d783ed597cd"
+content-hash = "095d8ebc8b4fe835cad5c4d6ccb368d25fe2fb360db203ae7b74ae8c61d9041c"

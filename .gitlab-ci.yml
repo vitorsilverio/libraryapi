@@ -1,0 +1,73 @@
+image: docker:stable
+
+stages:
+  - build
+  - deploy
+  - portainer
+### BUILD
+build:
+  stage: build
+  only:
+    - main
+  script:
+    - docker build . -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" --no-cache 
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER  -p $CI_REGISTRY_PASSWORD
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+
+#### DEPLOY
+.deploy_wannabe: &deploy
+  stage: deploy
+  variables:
+    GIT_CHECKOUT: "false"
+  before_script:
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER  -p $CI_REGISTRY_PASSWORD
+  script:
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} ${CI_REGISTRY_IMAGE}:$IMAGE_TAG
+    - docker push ${CI_REGISTRY_IMAGE}:$IMAGE_TAG
+
+deploy_outros:
+  <<: *deploy
+  only:
+    - homologacao
+  variables:
+    IMAGE_TAG: "homologacao"
+
+deploy_prod:
+  <<: *deploy
+  only:
+    - main
+  variables:
+    IMAGE_TAG: "latest"
+
+#### DEPLOY
+#
+# Exige configuração no PORTAINER e GITLAB 
+#
+# WEBHOOK_PORTAINER_HOMOLOGACAO e WEBHOOK_PORTAINER_PRODUCAO: Possui a URL para rebootar o Serviço em produção
+# URL de Webhook será enviada pela SeTIC mediante requisição via chamado.
+# Esta variavel deve ser configurada no codigos.ufsc.br:
+#  Dentro do projeto > Settings > CI/CD > Secret Variables
+.portainer_wannabe: &portainer
+  stage: portainer
+  variables:
+    GIT_CHECKOUT: "false"
+  script:
+          - if [[ ! -z "${WEBHOOK_PORTAINER}" ]]; then
+            for url in $(echo ${WEBHOOK_PORTAINER} | sed "s/,/ /g"); do wget --post-data '' -O - "$url"; done
+            else
+              echo "Empty \$WEBHOOK_PORTAINER" ; exit 1;
+            fi
+portainer_outros:
+  <<: *portainer
+  only:
+   - homologacao
+  variables:
+    WEBHOOK_PORTAINER: ${WEBHOOK_PORTAINER_HOMOLOGACAO}
+
+portainer_prod:
+  <<: *portainer
+  only:
+    - main
+  variables:
+    WEBHOOK_PORTAINER: ${WEBHOOK_PORTAINER_PRODUCAO}

@@ -41,12 +41,12 @@ def test_api_v2_ufsc():
     assert response.status_code == 200
 
 
-def test_api_v2_ufmg():
+def test_api_v2_udesc():
     response = client.get(
-        "/api/v2/pergamum/589287",
+        "/api/v2/pergamum/111939",
         headers={
             "Accept": "application/xml",
-            "Server": "https://catalogobiblioteca.ufmg.br/pergamum/web_service/servidor_ws.php",
+            "Server": "https://pergamumweb.udesc.br/pergamum/web_service/servidor_ws.php",
         },
     )
     if response.status_code == 400:
